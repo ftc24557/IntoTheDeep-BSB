@@ -1,0 +1,5 @@
+HM means Hardware Map
+SP means Set Point
+
+NOTE: the 'set point' nomenclature is used ONLY for encoder positions
+for servo positions definition just use like 'HighSlider' or 'MidPivot'
