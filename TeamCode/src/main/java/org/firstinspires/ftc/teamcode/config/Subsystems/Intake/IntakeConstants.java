@@ -12,8 +12,11 @@ public class IntakeConstants {
     //Intake Pivot Subsystem
     public static String HMPivot = "pivotIntake";
     public static double TransferPivot = 0;
-    public static double SearchingPivot = 0.14;
+    public static double SearchingPivot = 0.07;
     public static double CatchPivot = 0.33;
+
+
+    public static String HMSlider = "SliderIntake";
 
 
 
