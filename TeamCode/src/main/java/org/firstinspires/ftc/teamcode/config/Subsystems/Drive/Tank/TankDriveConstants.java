@@ -14,7 +14,7 @@ public class TankDriveConstants {
 
     public static IMU.Parameters IMUparameters = new IMU.Parameters(
             new RevHubOrientationOnRobot(
-            RevHubOrientationOnRobot.LogoFacingDirection.UP,
+            RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
             RevHubOrientationOnRobot.UsbFacingDirection.FORWARD
             )
     );

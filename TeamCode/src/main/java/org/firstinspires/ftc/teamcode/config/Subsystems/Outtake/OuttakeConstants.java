@@ -22,6 +22,7 @@ public class OuttakeConstants {
     public static double IntakeTransferPivotArm = 0;
     public static double SpecimenPivotArm = 0;
     public static double IntakeWallPivotArm = 0;
+
     //PIDF
     public static double PivotkP = 0;
     public static double PivotkI = 0;

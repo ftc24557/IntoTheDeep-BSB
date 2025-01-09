@@ -5,12 +5,12 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class Lift {
+public class LiftOuttake {
     DcMotor MotorLift0;
     DcMotor MotorLift1;
     int CurrentSetPoint = 0;
     PIDController pidController = new PIDController(OuttakeConstants.LiftkP, OuttakeConstants.LiftkI, OuttakeConstants.LiftkD);
-    public Lift(HardwareMap hardwareMap){
+    public LiftOuttake(HardwareMap hardwareMap){
         MotorLift0 = hardwareMap.get(DcMotor.class, OuttakeConstants.HMMotorLift0);
         MotorLift1 = hardwareMap.get(DcMotor.class, OuttakeConstants.HMMotorLift1);
         switch (OuttakeConstants.ReversedLiftMotor){

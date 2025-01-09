@@ -2,12 +2,10 @@ package org.firstinspires.ftc.teamcode.config.Subsystems.Outtake;
 
 import org.firstinspires.ftc.teamcode.config.Alarm;
 
-import java.util.Set;
-
 public class OuttakePositional {
     ClawOuttake claw;
     PositionalPivotOuttake pivot;
-    Lift lift;
+    LiftOuttake liftOuttake;
     Boolean StopRequested = false;
     public static Runnable Loop;
     public enum state {
@@ -20,20 +18,20 @@ public class OuttakePositional {
     public void Stop(){
         StopRequested = true;
     }
-    public OuttakePositional(Lift liftOuttake, ClawOuttake clawOuttake, PositionalPivotOuttake pivotOuttake, state StartingPos){
+    public OuttakePositional(LiftOuttake liftOuttake, ClawOuttake clawOuttake, PositionalPivotOuttake pivotOuttake, state StartingPos){
         claw = clawOuttake;
         pivot = pivotOuttake;
-        lift = liftOuttake;
+        this.liftOuttake = liftOuttake;
         Loop = ()->{
             while (!StopRequested){
-                lift.MainLoop();
+                this.liftOuttake.MainLoop();
             }
         };
 
         SetState(StartingPos);
     }
     public void Loop(){
-        lift.MainLoop();
+        liftOuttake.MainLoop();
     }
     public void Start(){
         Loop.run();
@@ -44,7 +42,7 @@ public class OuttakePositional {
             case INTAKE_WALL:
                 claw.OpenClaw();
                 claw.RotToIntake();
-                lift.LiftToIntake();
+                liftOuttake.LiftToIntake();
                 pivot.PivotToWallIntake();
                 break;
             case OUTTAKE_CHAMBER:
@@ -53,7 +51,7 @@ public class OuttakePositional {
                     if (currentState== OuttakePositional.state.OUTTAKE_CHAMBER){
                         pivot.PivotToSpecimen();
                         claw.RotToOuttake();
-                        lift.LiftToChamber();
+                        liftOuttake.LiftToChamber();
                     }
                 };
                 Alarm SetToOuttakeChamberAlarm = new Alarm(OuttakeConstants.DelayInToOut, SetToOuttakeChamber);
@@ -64,7 +62,7 @@ public class OuttakePositional {
                 Runnable SetToOuttakeBasket = ()->{
                     claw.CloseClaw();
                     if (currentState == OuttakePositional.state.OUTTAKE_BASKET){
-                        lift.LiftToHighBasket();
+                        liftOuttake.LiftToHighBasket();
                         pivot.PivotToSpecimen();
                         claw.RotToOuttake();
                     }
