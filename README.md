@@ -5,4 +5,4 @@ That repo contains all the team code for the Brazil FTC regional __Unimate #2455
 - Sample recoginition;
 - Full autonomous sample catching;
 - PedroPathing for localization and robot pathing;
-- organized asf
+- organized

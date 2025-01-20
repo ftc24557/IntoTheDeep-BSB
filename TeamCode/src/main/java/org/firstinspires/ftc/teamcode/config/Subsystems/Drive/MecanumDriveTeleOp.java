@@ -1,15 +1,16 @@
 package org.firstinspires.ftc.teamcode.config.Subsystems.Drive;
 
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.pedropathing.follower.Follower;
+import com.pedropathing.localization.Pose;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.pedroPathing.follower.Follower;
-import org.firstinspires.ftc.teamcode.pedroPathing.localization.Pose;
-
+import com.pedropathing.follower.Follower;
 public class MecanumDriveTeleOp {
     private GamepadEx MasterGamepad;
     private Follower Follower;
+
     private final Pose StartPose = new Pose(0,0,0);
     private boolean StopRequested = false;
     public void Stop(){
