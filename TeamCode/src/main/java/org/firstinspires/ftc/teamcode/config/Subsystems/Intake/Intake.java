@@ -24,14 +24,19 @@ public class Intake {
     public Intake(HardwareMap hardwareMap, SliderIntake sliderIntake, ClawIntake clawIntake, PivotIntake pivotIntake, state StartingPos, ColorRange colorRange){
         claw = clawIntake;
         pivot = pivotIntake;
-        SetState(StartingPos);
-        camera = new CameraIntake(hardwareMap, colorRange);
         slider =sliderIntake;
 
     }
+
     public void Loop(){
         slider.Loop();
     }
+    public boolean MatchingSample(){
+        return camera.GetMatchingSample();
+    }
+    
+
+
     public void SetState(state state){
         CurrentState = state;
         switch (state){
@@ -60,6 +65,7 @@ public class Intake {
                 claw.CloseClaw();
                 slider.SetState(SliderIntake.state.CATCHING);
                 break;
+
             case AUTO_CATCH: // dont use this yet
                 break;
 

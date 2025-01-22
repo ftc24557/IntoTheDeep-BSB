@@ -4,24 +4,24 @@ public class OuttakeConstants {
     //Global
     public static int DelayInToOut = 500;
     //Outtake Claw Subsystem
-    public static String HMClaw = "";
-    public static double ClosedClaw = 0;
+    public static String HMClaw = "servoClaw";
+    public static double ClosedClaw = 1;
     public static double OpenedClaw = 0;
 
     //Outtake Rot DOF
-    public static String HMRot = "";
+    public static String HMRot = "servoRot";
     public static double IntakeRot = 0;
-    public static double OuttakeRot = 0;
+    public static double OuttakeRot = 1;
 
     //Outtake Pivot Arm
-    public static String HMPivotArm0 = "";
-    public static String HMPivotArm1 = "";
-    public static int ReversedServo = 0;
+    public static String HMPivotArm0 = "arm0";
+    public static String HMPivotArm1 = "arm1";
+    public static int ReversedServo = 1;
     //Positional
     public static double BasketPivotArm = 0;
     public static double IntakeTransferPivotArm = 0;
-    public static double SpecimenPivotArm = 0;
-    public static double IntakeWallPivotArm = 0;
+    public static double SpecimenPivotArm = 0.22;
+    public static double IntakeWallPivotArm = 0.9;
 
     //PIDF
     public static double PivotkP = 0;
@@ -36,14 +36,14 @@ public class OuttakeConstants {
 
 
     //Lift Subsystem
-public static String HMMotorLift0 = "";
-public static String HMMotorLift1 = "";
+public static String HMMotorLift0 = "motorLift0";
+public static String HMMotorLift1 = "motorLift1";
 public static int ReversedLiftMotor = 0;
-public static int SetPointIntakeLift = 0;
-public static int SetPointOuttakeChamberLift = 0;
+public static int SetPointIntakeLift = 10;
+public static int SetPointOuttakeChamberLift = 850;
 public static int SetPointOuttakeBasketLift = 0;
 public static int SetPointTransferLift = 0;
-public static double LiftkP = 0;
+public static double LiftkP = 0.01;
 public static double LiftkI = 0;
 public static double LiftkD = 0;
 

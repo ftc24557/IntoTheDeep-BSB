@@ -17,8 +17,14 @@ public class PositionalPivotOuttake {
     }
 
     private void PivotToPosition(double position){
-        Pivot0.setPosition(position*(OuttakeConstants.ReversedServo==0?-1:1));
-        Pivot1.setPosition(position*(OuttakeConstants.ReversedServo==1?-1:1));
+        if (OuttakeConstants.ReversedServo==1) {
+            Pivot0.setPosition(position);
+            Pivot1.setPosition(1 - position*1.1);
+        } else {
+            Pivot1.setPosition(position);
+            Pivot0.setPosition(1 - position*1.1);
+
+        }
     }
 
     public void PivotToTransfer(){

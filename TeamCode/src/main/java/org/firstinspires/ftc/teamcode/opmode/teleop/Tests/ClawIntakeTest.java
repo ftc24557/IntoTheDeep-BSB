@@ -5,7 +5,7 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-
+import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Intake.ClawIntake;
 @TeleOp
 public class ClawIntakeTest extends LinearOpMode {
@@ -19,10 +19,14 @@ public class ClawIntakeTest extends LinearOpMode {
         ClawIntake clawIntake = new ClawIntake(hardwareMap);
         clawIntake.ResetRotAngle();
         clawIntake.OpenClaw();
-
+        double pos = 0;
+        Servo pivo = hardwareMap.get(Servo.class, "intakePivot");
         waitForStart();
         while (!isStopRequested()) {
-
+            pivo.setPosition(pos);
+            pos+=gamepad1.left_stick_y*0.01;
+            telemetry.addData("pos", pos);
+            telemetry.update();
             intakeSampleReader.readValue();
             gamepadEx.readButtons();
             if (intakeSampleReader.wasJustPressed()) {

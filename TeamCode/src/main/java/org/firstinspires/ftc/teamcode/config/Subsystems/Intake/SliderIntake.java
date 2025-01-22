@@ -4,9 +4,9 @@ import android.transition.Slide;
 
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.pedroPathing.util.PIDFController;
 
 public class SliderIntake {
     //ALL IN CM
@@ -15,9 +15,9 @@ public class SliderIntake {
     private final double cmPerRev = (pulleyPitch*pulleyTeeth)/Math.PI;
     private final double ticksPerRev = 537.6;
     private double extensionInCm = 0.0;
-    private double p;
-    private double i;
-    private double d;
+    private double p = 0.001;
+    private double i = 0;
+    private double d = 0;
     private double sp;
     private DcMotor SliderMotor;
     private PIDController pidController = new PIDController(p, i, d);
@@ -31,10 +31,11 @@ public class SliderIntake {
         return CurrentState;
     }
 
-    public SliderIntake(HardwareMap hardwareMap, state StartingPos){
+    public SliderIntake(HardwareMap hardwareMap){
         SliderMotor = hardwareMap.get(DcMotor.class, IntakeConstants.HMSlider);
         SliderMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         SliderMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        SliderMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
     }
     public void SetExtensionCm(double cm){
@@ -75,7 +76,7 @@ public class SliderIntake {
 
         switch (CurrentState){
             case TRANSFER:
-                SetSP(0);
+                SetSP(ExtensionCmInTicks(extensionInCm));
                 break;
             case CATCHING:
                 SetSP(ExtensionCmInTicks(extensionInCm));

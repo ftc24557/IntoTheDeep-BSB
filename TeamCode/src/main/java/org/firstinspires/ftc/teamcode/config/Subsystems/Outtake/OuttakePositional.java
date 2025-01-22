@@ -12,6 +12,7 @@ public class OuttakePositional {
         INTAKE_WALL,
         OUTTAKE_CHAMBER,
         OUTTAKE_BASKET,
+        INIT_POS,
         TRANSFER
     }
     private state currentState;
@@ -69,6 +70,10 @@ public class OuttakePositional {
                 };
                 Alarm SetToOuttakeBasketAlarm = new Alarm(OuttakeConstants.DelayInToOut, SetToOuttakeBasket);
                 SetToOuttakeBasketAlarm.Run();
+                break;
+            case INIT_POS:
+                claw.CloseClaw();
+                pivot.PivotToWallIntake();
                 break;
             case TRANSFER:
                 break; //nao sei como fazer lol

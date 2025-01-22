@@ -36,9 +36,9 @@ public class TestTeleOp extends LinearOpMode {
         //intake
         ClawIntake clawIntake = new ClawIntake(hardwareMap);
         PivotIntake pivotIntake = new PivotIntake(hardwareMap);
-        SliderIntake sliderIntake = new SliderIntake(hardwareMap, SliderIntake.state.TRANSFER);
+        SliderIntake sliderIntake = new SliderIntake(hardwareMap);
         Intake intake = new Intake(hardwareMap, sliderIntake, clawIntake, pivotIntake, Intake.state.TRANSFER_CLOSE, ColorRange.BLUE);
-        double intakeExtension = 0.0;
+        double intakeExtension = 1;
 
 
         //gamepads
@@ -50,7 +50,8 @@ public class TestTeleOp extends LinearOpMode {
 
 
         //drivetrain :)
-        MecanumDriveTeleOp drive = new MecanumDriveTeleOp(gamepadEx1, hardwareMap);
+        MecanumDriveTeleOp drive = new MecanumDriveTeleOp(hardwareMap);
+        intake.SetState(Intake.state.SEARCH);
         waitForStart();
 
 
@@ -58,65 +59,56 @@ public class TestTeleOp extends LinearOpMode {
 
 
         while (!isStopRequested()){
+
+            gamepadEx1.readButtons();
+            gamepadEx2.readButtons();
+            drive.Loop(-gamepad1.left_stick_x, gamepad1.left_stick_y, -gamepad1.right_stick_x);
+            if (gamepadEx1.wasJustPressed(GamepadKeys.Button.START)){
+                drive.ResetOdom();
+            }
+
             outtakeModeToggle.readValue();
             outtakeToggle.readValue();
-            if (outtakeModeToggle.getState()){ //Specimen
                 if (outtakeToggle.getState()){
                     outtake.SetState(OuttakePositional.state.OUTTAKE_CHAMBER);
                 } else {
                     outtake.SetState(OuttakePositional.state.INTAKE_WALL);
                 }
-            } else { //Basket
-                if (outtakeToggle.getState()){
-                    outtake.SetState(OuttakePositional.state.OUTTAKE_BASKET);
-                } else {
-                   outtake.SetState(OuttakePositional.state.TRANSFER);
-                }
+
+
+
+
+
+            if (gamepadEx2.wasJustPressed(GamepadKeys.Button.A)){
+                intakeExtension = 1;
+                intake.SetState(Intake.state.TRANSFER_CLOSE);
             }
-
-
-            intakeToggle.readValue();
-
-            if (intakeToggle.stateJustChanged()){
-                if (intakeToggle.getState()){
-                    intakeExtension+=10.0;
-                    intake.SetState(Intake.state.SEARCH);
-                }
+            if (gamepadEx2.wasJustPressed(GamepadKeys.Button.X)){
+                intake.SetState(Intake.state.CATCH);
+                Alarm alarm = new Alarm(500, ()->{
+                    intake.SetState(Intake.state.SEARCH_CLOSE);
+                });
+                alarm.Run();
             }
-
-            if (intakeToggle.getState()){
-                intakeExtension+=gamepadEx2.getLeftY()*0.01;
-                if (gamepadEx2.wasJustPressed(GamepadKeys.Button.X)){
-                    intake.SetState(Intake.state.CATCH);
-                    Alarm alarm0 = new Alarm(500, ()->{intake.SetState(Intake.state.SEARCH_CLOSE);});
-                    alarm0.Run();
-                }
-                if (gamepadEx1.wasJustPressed(GamepadKeys.Button.Y)){
-                    intake.SetState(Intake.state.SEARCH);
-                }
-
-            } else {
-
-                intake.SetState(Intake.state.SEARCH_CLOSE);
-                if (gamepadEx2.wasJustPressed(GamepadKeys.Button.Y)){
-                    intake.SetState(Intake.state.SEARCH);
-                }
-                intakeExtension = 0.0;
+            if (gamepadEx2.wasJustPressed(GamepadKeys.Button.Y)){
+                intake.SetState(Intake.state.SEARCH);
             }
+            if (intakeExtension<1) {
+                intakeExtension = 1;
+            }
+            if (intakeExtension>12){
+                intakeExtension = 12;
+            }
+            intakeExtension-=gamepad2.left_stick_y*0.2;
             sliderIntake.SetExtensionCm(intakeExtension);
-
-
-            gamepadEx1.readButtons();
-            gamepadEx2.readButtons();
-
 
 
 
 
             intake.Loop();
             outtake.Loop();
-            drive.Loop();
-
+            telemetry.addData("extension ", intakeExtension);
+            telemetry.update();
 
 
         }
