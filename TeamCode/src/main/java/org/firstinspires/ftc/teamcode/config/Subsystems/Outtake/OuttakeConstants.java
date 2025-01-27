@@ -20,7 +20,7 @@ public class OuttakeConstants {
     //Positional
     public static double BasketPivotArm = 0.75;
     public static double IntakeTransferPivotArm = 0.05;
-    public static double SpecimenPivotArm = 0.25;
+    public static double SpecimenPivotArm = 0.15;
     public static double IntakeWallPivotArm = 0.9;
 
     //PIDF
@@ -40,7 +40,7 @@ public static String HMMotorLift0 = "motorLift0";
 public static String HMMotorLift1 = "motorLift1";
 public static int ReversedLiftMotor = 1;
 public static int SetPointIntakeLift = 30;
-public static int SetPointOuttakeChamberLift = 890;
+public static int SetPointOuttakeChamberLift = 920;
 public static int SetPointOuttakeBasketLift = 3500;
 public static int SetPointTransferLift = 250;
 public static int SetPointStartLift = 1200;

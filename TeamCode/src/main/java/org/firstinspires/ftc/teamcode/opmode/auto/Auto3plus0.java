@@ -40,12 +40,12 @@ public class Auto3plus0 extends OpMode {
     private Follower follower;
     Pose startingPose = new Pose(10,65,0);
     Pose scoringPose1 = new Pose(39, 67, 0);
-    Pose prePushPose = new Pose(30,42,0);
-    Pose startPushPose = new Pose(65,27,0);
-    Pose endPushPose = new Pose(18, 27, 0);
-    Pose pickUpPose = new Pose(10, 30, 0);
-    Pose scoringPose2 = new Pose(37, 67, 0);
-    Pose scoringPose3 = new Pose(37, 69, 0);
+    Pose prePushPose = new Pose(26,43,0);
+    Pose startPushPose = new Pose(67,31,Math.toRadians(-50));
+    Pose endPushPose = new Pose(25, 27, Math.toRadians(-90));
+    Pose pickUpPose = new Pose(11, 35, 0);
+    Pose scoringPose2 = new Pose(39, 67, 0);
+    Pose scoringPose3 = new Pose(39, 69, 0);
 
     private Path scorePreload, park;
     private PathChain preloadToPrePush, prePushToStartPush, push, pushToPickUp, scoreSecond, secondToPickUp, scoreThird;
@@ -117,7 +117,6 @@ public class Auto3plus0 extends OpMode {
                 if(!follower.isBusy()) {
                     follower.followPath(prePushToStartPush,true);
                     setPathState(3);
-                    inDelay = true;
                 }
                 break;
             case 3:
@@ -132,10 +131,18 @@ public class Auto3plus0 extends OpMode {
                 if(!follower.isBusy()) {
                     follower.followPath(pushToPickUp,true);
                     setPathState(5);
+
                 }
                 break;
             case 5:
                 if(!follower.isBusy()) {
+                    if (!inDelay) {
+                        inDelay = true;
+                        Alarm pickUp1Alarm = new Alarm(1000, () -> {
+                            inDelay = false;
+                        });
+                        pickUp1Alarm.Run();
+                    }
                     outtake.SetState(OuttakePositional.state.OUTTAKE_CHAMBER);
                     follower.followPath(scoreSecond,true);
                     setPathState(6);
@@ -150,6 +157,13 @@ public class Auto3plus0 extends OpMode {
                 break;
             case 7:
                 if(!follower.isBusy()) {
+                    if (!inDelay) {
+                        inDelay = true;
+                        Alarm pickUp2Alarm = new Alarm(1000, () -> {
+                            inDelay = false;
+                        });
+                        pickUp2Alarm.Run();
+                    }
                     outtake.SetState(OuttakePositional.state.OUTTAKE_CHAMBER);
                     follower.followPath(scoreThird,true);
                     setPathState(8);
