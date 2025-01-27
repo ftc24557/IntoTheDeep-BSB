@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmode.auto;
 
+import static java.lang.Thread.sleep;
+
 import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
 import com.pedropathing.pathgen.BezierLine;
@@ -12,6 +14,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 
+import org.firstinspires.ftc.teamcode.config.Alarm;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Outtake.ClawOuttake;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Outtake.LiftOuttake;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Outtake.OuttakePositional;
@@ -36,8 +39,8 @@ public class Auto3plus0 extends OpMode {
 
     private Follower follower;
     Pose startingPose = new Pose(10,65,0);
-    Pose scoringPose1 = new Pose(37, 65, 0);
-    Pose prePushPose = new Pose(36,37,0);
+    Pose scoringPose1 = new Pose(39, 67, 0);
+    Pose prePushPose = new Pose(30,42,0);
     Pose startPushPose = new Pose(65,27,0);
     Pose endPushPose = new Pose(18, 27, 0);
     Pose pickUpPose = new Pose(10, 30, 0);
@@ -48,7 +51,7 @@ public class Auto3plus0 extends OpMode {
     private PathChain preloadToPrePush, prePushToStartPush, push, pushToPickUp, scoreSecond, secondToPickUp, scoreThird;
     private Timer pathTimer, actionTimer, opmodeTimer;
     private int pathState;
-
+    private boolean inDelay = false;
 
     private OuttakePositional outtake;
 
@@ -58,6 +61,7 @@ public class Auto3plus0 extends OpMode {
         preloadToPrePush = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(scoringPose1), new Point(prePushPose)))
                 .setLinearHeadingInterpolation(scoringPose1.getHeading(), prePushPose.getHeading())
+                .setPathEndTimeoutConstraint(1000)
                 .build();
         prePushToStartPush = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(prePushPose), new Point(startPushPose)))
@@ -93,13 +97,17 @@ public class Auto3plus0 extends OpMode {
     public void autonomousPathUpdate() {
         switch (pathState) {
             case 0:
+
                 follower.followPath(scorePreload);
+
                 outtake.SetState(OuttakePositional.state.OUTTAKE_CHAMBER);
                 setPathState(1);
+
                 break;
             case 1:
 
                 if(!follower.isBusy()) {
+                    follower.update();
                     follower.followPath(preloadToPrePush,true);
                     outtake.SetState(OuttakePositional.state.INTAKE_WALL);
                     setPathState(2);
@@ -109,6 +117,7 @@ public class Auto3plus0 extends OpMode {
                 if(!follower.isBusy()) {
                     follower.followPath(prePushToStartPush,true);
                     setPathState(3);
+                    inDelay = true;
                 }
                 break;
             case 3:
@@ -156,9 +165,16 @@ public class Auto3plus0 extends OpMode {
         }
     }
     @Override
+    public void start(){
+        outtake.SetState(OuttakePositional.state.OUTTAKE_CHAMBER);
+
+        inDelay = true;
+        Alarm alarmStart = new Alarm(1000, ()->{inDelay=false;});
+        alarmStart.Run();
+    }
+    @Override
     public void init(){
         pathTimer = new Timer();
-
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
         follower.setStartingPose(startingPose);
@@ -168,13 +184,17 @@ public class Auto3plus0 extends OpMode {
         ClawOuttake claw = new ClawOuttake(hardwareMap);
         PositionalPivotOuttake pivot = new PositionalPivotOuttake(hardwareMap);
         LiftOuttake lift = new LiftOuttake(hardwareMap);
-        outtake = new OuttakePositional(lift, claw, pivot, OuttakePositional.state.INIT_POS);
+        outtake = new OuttakePositional(lift, claw, pivot, OuttakePositional.state.INTAKE_WALL);
+        claw.CloseClaw();
     }
+
     @Override
     public void loop(){
-        follower.update();
+        if (!inDelay) {
+            follower.update();
+            autonomousPathUpdate();
+        }
         outtake.Loop();
-        autonomousPathUpdate();
         if (pathState>=0) {
             telemetry.addData("Current state: ", displayStates[pathState]);
         } else {
@@ -183,6 +203,8 @@ public class Auto3plus0 extends OpMode {
         telemetry.addData("x: ", follower.getPose().getX());
         telemetry.addData("y: ", follower.getPose().getY());
         telemetry.addData("Heading: ", follower.getPose().getHeading());
+        telemetry.addData("indelay: ", inDelay);
+        telemetry.addData("isBusy: ", follower.isBusy());
         telemetry.update();
     }
 }

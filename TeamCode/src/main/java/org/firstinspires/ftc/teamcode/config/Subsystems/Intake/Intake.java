@@ -9,7 +9,7 @@ public class Intake {
     ClawIntake claw;
     PivotIntake pivot;
     CameraIntake camera;
-    SliderIntake slider;
+    public static SliderIntake slider;
     public enum state {
         CATCH,
         SEARCH,

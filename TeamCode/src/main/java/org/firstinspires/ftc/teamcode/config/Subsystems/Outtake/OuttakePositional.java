@@ -13,7 +13,9 @@ public class OuttakePositional {
         OUTTAKE_CHAMBER,
         OUTTAKE_BASKET,
         INIT_POS,
-        TRANSFER
+        TRANSFER,
+        START_CLIMB,
+        END_CLIMB
     }
     private state currentState;
     public void Stop(){
@@ -64,7 +66,7 @@ public class OuttakePositional {
                     claw.CloseClaw();
                     if (currentState == OuttakePositional.state.OUTTAKE_BASKET){
                         liftOuttake.LiftToHighBasket();
-                        pivot.PivotToSpecimen();
+                        pivot.PivotToBasket();
                         claw.RotToOuttake();
                     }
                 };
@@ -76,7 +78,20 @@ public class OuttakePositional {
                 pivot.PivotToWallIntake();
                 break;
             case TRANSFER:
+                pivot.PivotToTransfer();
+                liftOuttake.LiftToTransfer();
+                claw.OpenClaw();
+                claw.RotToIntake();
                 break; //nao sei como fazer lol
+            case START_CLIMB:
+                pivot.PivotToWallIntake();
+                liftOuttake.LiftToStartClimb();
+                break;
+            case END_CLIMB:
+
+                liftOuttake.LiftToEndClimb();
+                break;
+
         }
     }
 }

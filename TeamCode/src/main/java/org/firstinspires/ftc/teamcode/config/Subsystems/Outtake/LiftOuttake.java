@@ -50,7 +50,8 @@ public class LiftOuttake {
     public void LiftToIntake(){
         SetToSetPoint(OuttakeConstants.SetPointIntakeLift);
     }
-
+    public void LiftToStartClimb(){SetToSetPoint(OuttakeConstants.SetPointStartLift);}
+    public void LiftToEndClimb(){SetToSetPoint(OuttakeConstants.SetPointEndLift);}
     public void MainLoop(){
         double Power = pidController.calculate(GetMotorPositions()[0], CurrentSetPoint); //Perguntar pro lauro se eu faço 1 controller pra cada ou nao
         SetPowers(Power);

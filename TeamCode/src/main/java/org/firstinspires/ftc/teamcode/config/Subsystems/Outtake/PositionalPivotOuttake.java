@@ -40,7 +40,7 @@ public class PositionalPivotOuttake {
 
     }
     public void PivotToBasket(){
-        PivotToPosition(OuttakeConstants.IntakeTransferPivotArm);
+        PivotToPosition(OuttakeConstants.BasketPivotArm);
 
     }
 }
