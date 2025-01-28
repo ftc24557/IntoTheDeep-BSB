@@ -6,7 +6,7 @@ public class OuttakeConstants {
     //Outtake Claw Subsystem
     public static String HMClaw = "servoClaw";
     public static double ClosedClaw = 1;
-    public static double OpenedClaw = 0;
+    public static double OpenedClaw = 0.75;
 
     //Outtake Rot DOF
     public static String HMRot = "servoRot";
@@ -20,7 +20,7 @@ public class OuttakeConstants {
     //Positional
     public static double BasketPivotArm = 0.75;
     public static double IntakeTransferPivotArm = 0.05;
-    public static double SpecimenPivotArm = 0.15;
+    public static double SpecimenPivotArm = 0.21;
     public static double IntakeWallPivotArm = 0.9;
 
     //PIDF
@@ -39,8 +39,8 @@ public class OuttakeConstants {
 public static String HMMotorLift0 = "motorLift0";
 public static String HMMotorLift1 = "motorLift1";
 public static int ReversedLiftMotor = 1;
-public static int SetPointIntakeLift = 30;
-public static int SetPointOuttakeChamberLift = 920;
+public static int SetPointIntakeLift = 15;
+public static int SetPointOuttakeChamberLift = 660;
 public static int SetPointOuttakeBasketLift = 3500;
 public static int SetPointTransferLift = 250;
 public static int SetPointStartLift = 1200;
