@@ -125,7 +125,7 @@ public class TestTeleOp extends LinearOpMode {
             if (intakeExtension>12){
                 intakeExtension = 12;
             }
-            intakeExtension-=gamepad2.left_stick_y*0.4;
+            intakeExtension-=gamepad2.left_stick_y*0.8;
             sliderIntake.SetExtensionCm(intakeExtension);
             if (gamepadEx2.wasJustPressed(GamepadKeys.Button.RIGHT_BUMPER) && intakeRotAngle>0){
                 intakeRotAngle-= 270/3;

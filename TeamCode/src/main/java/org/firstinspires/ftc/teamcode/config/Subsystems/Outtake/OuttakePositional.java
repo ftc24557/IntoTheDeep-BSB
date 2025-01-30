@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.config.Subsystems.Outtake;
 import org.firstinspires.ftc.teamcode.config.Alarm;
 
 public class OuttakePositional {
-    ClawOuttake claw;
+    public ClawOuttake claw;
     PositionalPivotOuttake pivot;
     LiftOuttake liftOuttake;
     Boolean StopRequested = false;

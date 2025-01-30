@@ -45,15 +45,15 @@ public class Auto4plus0 extends OpMode {
 
     private Follower follower;
     Pose startingPose = new Pose(10,65,0);
-    Pose scoringPose1 = new Pose(39.5, 67, 0);
+    Pose scoringPose1 = new Pose(39.5, 72, 0);
     Pose startPush1 = new Pose(61, 37, 0);
     Pose endPush1 = new Pose(20, 26, 0);
     Pose startPush2 = new Pose(65, 18, 0);
     Pose endPush2 = new Pose(20, 18, 0);
-    Pose pickUpPose = new Pose(11, 35, 0);
-    Pose scoringPose2 = new Pose(39.5, 68, 0);
-    Pose scoringPose3 = new Pose(39.5, 69, 0);
-    Pose scoringPose4 = new Pose(39.5, 66, 0);
+    Pose pickUpPose = new Pose(12, 35, 0);
+    Pose scoringPose2 = new Pose(39.5, 76, 0);
+    Pose scoringPose3 = new Pose(39.5, 80, 0);
+    Pose scoringPose4 = new Pose(39.5, 70, 0);
     private Path scorePreload, park;
     private PathChain preloadToPush, push1, push1ToPush2, push2, push2ToPickUp1, score2, score2ToPickUp2, score3, score3ToPickUp3, score4;
     private Timer pathTimer, actionTimer, opmodeTimer;
@@ -93,33 +93,39 @@ public class Auto4plus0 extends OpMode {
                 new Point(endPush2)
         )).setLinearHeadingInterpolation(startPush2.getHeading(), endPush2.getHeading())
                 .build();
-        push2ToPickUp1 = follower.pathBuilder().addPath(new BezierLine(
+        push2ToPickUp1 = follower.pathBuilder().addPath(new BezierCurve(
                 new Point(endPush2),
+                new Point(29, 33),
                 new Point(pickUpPose)
         ))
                 .setLinearHeadingInterpolation(endPush2.getHeading(), pickUpPose.getHeading())
                 .build();
-        score2 =follower.pathBuilder().addPath(new BezierLine(
+        score2 =follower.pathBuilder().addPath(new BezierCurve(
                 new Point(pickUpPose),
+                        new Point(11, 70),
                 new Point(scoringPose2)
         )).setLinearHeadingInterpolation(pickUpPose.getHeading(), scoringPose2.getHeading())
                 .build();
         score2ToPickUp2 = follower.pathBuilder().addPath(new BezierCurve(
                 new Point(scoringPose2),
+                new Point(16,27),
                 new Point(pickUpPose)
         )).setLinearHeadingInterpolation(scoringPose2.getHeading(), pickUpPose.getHeading())
                 .build();
         score3 = follower.pathBuilder().addPath(new BezierCurve(
                 new Point(pickUpPose),
+                new Point(11, 70),
                 new Point(scoringPose3)
         )).setLinearHeadingInterpolation(pickUpPose.getHeading(), scoringPose3.getHeading())
                 .build();
         score3ToPickUp3 = follower.pathBuilder().addPath(new BezierCurve(
                 new Point(scoringPose3),
+                new Point(16,27),
                 new Point(pickUpPose)
         )).setLinearHeadingInterpolation(scoringPose3.getHeading(), pickUpPose.getHeading()).build();
         score4 = follower.pathBuilder().addPath(new BezierCurve(
                 new Point(pickUpPose),
+                        new Point(11, 70),
                 new Point(scoringPose4)
         )).setLinearHeadingInterpolation(0,0)
                 .build();
@@ -133,37 +139,37 @@ public class Auto4plus0 extends OpMode {
     public void autonomousPathUpdate() {
         switch (pathState) {
             case 0:
-                follower.followPath(scorePreload);
+                follower.followPath(scorePreload,true);
                 setPathState(1);
                 break;
             case 1:
                 if (!follower.isBusy()){
                     outtake.SetState(OuttakePositional.state.INTAKE_WALL);
-                    follower.followPath(preloadToPush);
+                    follower.followPath(preloadToPush,true);
                     setPathState(2);
                 }
                 break;
             case 2:
                 if (!follower.isBusy()){
-                    follower.followPath(push1);
+                    follower.followPath(push1,true);
                     setPathState(3);
                 }
                 break;
             case 3:
                 if (!follower.isBusy()){
-                    follower.followPath(push1ToPush2);
+                    follower.followPath(push1ToPush2,true);
                     setPathState(4);
                 }
                 break;
             case 4:
                 if (!follower.isBusy()){
-                    follower.followPath(push2);
+                    follower.followPath(push2,true);
                     setPathState(5);
                 }
                 break;
             case 5:
                 if (!follower.isBusy()){
-                    follower.followPath(push2ToPickUp1);
+                    follower.followPath(push2ToPickUp1,true);
                     setPathState(6);
                 }
                 break;
@@ -176,14 +182,14 @@ public class Auto4plus0 extends OpMode {
                         });
                         score2Alarm.Run();
                     }
-                    follower.followPath(score2);
+                    follower.followPath(score2,true);
                     setPathState(7);
                     outtake.SetState(OuttakePositional.state.OUTTAKE_CHAMBER);
                 }
                 break;
             case 7:
                 if (!follower.isBusy()){
-                    follower.followPath(score2ToPickUp2);
+                    follower.followPath(score2ToPickUp2,true);
                     setPathState(8);
                     outtake.SetState(OuttakePositional.state.INTAKE_WALL);
                 }
@@ -198,14 +204,14 @@ public class Auto4plus0 extends OpMode {
                         score3Alarm.Run();
                     }
                     outtake.SetState(OuttakePositional.state.OUTTAKE_CHAMBER);
-                    follower.followPath(score3);
+                    follower.followPath(score3,true);
                     setPathState(9);
                 }
                 break;
             case 9:
                 if (!follower.isBusy()){
                     outtake.SetState(OuttakePositional.state.INTAKE_WALL);
-                    follower.followPath(score3ToPickUp3);
+                    follower.followPath(score3ToPickUp3,true);
                     setPathState(10);
                 }
                 break;
@@ -218,14 +224,14 @@ public class Auto4plus0 extends OpMode {
                         });
                         score4Alarm.Run();
                     }
-                    follower.followPath(score4);
+                    follower.followPath(score4,true);
                     outtake.SetState(OuttakePositional.state.OUTTAKE_CHAMBER);
                     setPathState(11);
                 }
                 break;
             case 11:
                 if (!follower.isBusy()){
-                    follower.followPath(park);
+                    follower.followPath(park,true);
                     outtake.SetState(OuttakePositional.state.INTAKE_WALL);
                     setPathState(-1);
                 }
