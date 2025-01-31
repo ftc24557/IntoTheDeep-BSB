@@ -50,7 +50,7 @@ public class Auto4plus0 extends OpMode {
     Pose endPush1 = new Pose(20, 26, 0);
     Pose startPush2 = new Pose(65, 18, 0);
     Pose endPush2 = new Pose(20, 18, 0);
-    Pose pickUpPose = new Pose(12, 35, 0);
+    Pose pickUpPose = new Pose(11.5, 35, 0);
     Pose scoringPose2 = new Pose(39.5, 76, 0);
     Pose scoringPose3 = new Pose(39.5, 80, 0);
     Pose scoringPose4 = new Pose(39.5, 70, 0);

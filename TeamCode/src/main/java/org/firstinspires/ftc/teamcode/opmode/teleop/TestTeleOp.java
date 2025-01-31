@@ -12,6 +12,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.config.Alarm;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Drive.MecanumDriveTeleOp;
+import org.firstinspires.ftc.teamcode.config.Subsystems.Feedback.FeedBack;
+import org.firstinspires.ftc.teamcode.config.Subsystems.Feedback.FeedBackLed;
+import org.firstinspires.ftc.teamcode.config.Subsystems.Feedback.FeedBackSensor;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Intake.ClawIntake;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Intake.Intake;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Intake.PivotIntake;
@@ -34,6 +37,12 @@ public class TestTeleOp extends LinearOpMode {
     @Override
     public void runOpMode(){
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+
+        //feedback
+        FeedBackLed led = new FeedBackLed(hardwareMap);
+        FeedBackSensor sensor = new FeedBackSensor(hardwareMap);
+        FeedBack feedBack = new FeedBack(led, sensor);
+
 
         //outtake
         LiftOuttake liftOuttake = new LiftOuttake(hardwareMap);
@@ -71,6 +80,7 @@ public class TestTeleOp extends LinearOpMode {
 
         while (!isStopRequested()){
 
+
             gamepadEx1.readButtons();
             gamepadEx2.readButtons();
 
@@ -87,12 +97,11 @@ public class TestTeleOp extends LinearOpMode {
             if (gamepadEx1.wasJustPressed(GamepadKeys.Button.START)){
                 drive.ResetOdom();
             }
-
+            feedBack.Loop();
             outtakeModeToggle.readValue();
             outtakeToggle.readValue();
             outtakeBasketToggle.readValue();
             if (!Climbing) {
-
                 if (outtakeToggle.stateJustChanged()) {
                         if (outtakeToggle.getState()) {
                             outtake.SetState(OuttakePositional.state.OUTTAKE_CHAMBER);
@@ -100,6 +109,9 @@ public class TestTeleOp extends LinearOpMode {
                             outtake.SetState(OuttakePositional.state.INTAKE_WALL);
                         }
                 }
+                feedBack.SetMode(FeedBack.Mode.COLOR);
+            } else {
+                feedBack.SetMode(FeedBack.Mode.IDLE);
             }
 
 

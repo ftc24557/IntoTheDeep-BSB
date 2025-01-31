@@ -36,18 +36,18 @@ public class OuttakeConstants {
 
 
     //Lift Subsystem
-public static String HMMotorLift0 = "motorLift0";
-public static String HMMotorLift1 = "motorLift1";
-public static int ReversedLiftMotor = 1;
-public static int SetPointIntakeLift = 15;
-public static int SetPointOuttakeChamberLift = 715;
-public static int SetPointOuttakeBasketLift = 3500;
-public static int SetPointTransferLift = 150;
-public static int SetPointStartLift = 1200;
-public static int SetPointEndLift = 900;
-public static double LiftkP = 0.01;
-public static double LiftkI = 0;
-public static double LiftkD = 0;
+    public static String HMMotorLift0 = "motorLift0";
+    public static String HMMotorLift1 = "motorLift1";
+    public static int ReversedLiftMotor = 1;
+    public static int SetPointIntakeLift = 15;
+    public static int SetPointOuttakeChamberLift = 715;
+    public static int SetPointOuttakeBasketLift = 3500;
+    public static int SetPointTransferLift = 150;
+    public static int SetPointStartLift = 1200;
+    public static int SetPointEndLift = 900;
+    public static double LiftkP = 0.01;
+    public static double LiftkI = 0;
+    public static double LiftkD = 0;
 
 
 
