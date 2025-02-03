@@ -21,6 +21,7 @@
 
 package org.firstinspires.ftc.teamcode.opmode.teleop.Tests;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -49,6 +50,8 @@ import org.firstinspires.ftc.teamcode.config.Subsystems.Intake.ClawIntake;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 @TeleOp
+
+@Disabled
 public class a extends LinearOpMode
 {
     @Override

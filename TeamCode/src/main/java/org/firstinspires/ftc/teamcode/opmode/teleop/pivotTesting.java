@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmode.teleop;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -12,6 +13,7 @@ import org.firstinspires.ftc.teamcode.config.Subsystems.Outtake.ClawOuttake;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Outtake.PositionalPivotOuttake;
 import org.firstinspires.ftc.vision.opencv.ColorRange;
 
+@Disabled
 @TeleOp
 public class pivotTesting extends LinearOpMode {
     @Override

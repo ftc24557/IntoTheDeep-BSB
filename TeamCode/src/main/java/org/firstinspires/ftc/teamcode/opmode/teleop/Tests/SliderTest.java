@@ -1,11 +1,14 @@
 package org.firstinspires.ftc.teamcode.opmode.teleop.Tests;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.config.Subsystems.Intake.SliderIntake;
 @TeleOp
+
+@Disabled
 public class SliderTest extends LinearOpMode {
     SliderIntake slider;
     double extension = 0.0;

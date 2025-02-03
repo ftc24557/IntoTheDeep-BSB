@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.opmode.teleop.Tests;
 
 import android.util.Size;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -15,6 +16,8 @@ import org.firstinspires.ftc.vision.opencv.ImageRegion;
 import org.opencv.core.Point;
 import org.opencv.core.RotatedRect;
 import java.util.List;
+
+@Disabled
 @TeleOp(name = "Concept: Vision Color-Locator", group = "Concept")
 public class camera extends LinearOpMode
 {

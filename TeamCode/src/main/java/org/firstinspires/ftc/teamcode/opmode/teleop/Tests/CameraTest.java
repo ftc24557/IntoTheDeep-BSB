@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmode.teleop.Tests;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -7,6 +8,8 @@ import org.firstinspires.ftc.teamcode.config.Subsystems.Intake.Camera.CameraCons
 import org.firstinspires.ftc.teamcode.config.Subsystems.Intake.Camera.CameraIntake;
 
 @TeleOp
+
+@Disabled
 public class CameraTest extends LinearOpMode {
 
     @Override

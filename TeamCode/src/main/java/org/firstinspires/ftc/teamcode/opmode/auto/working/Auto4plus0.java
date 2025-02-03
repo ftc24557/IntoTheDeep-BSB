@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmode.auto;
+package org.firstinspires.ftc.teamcode.opmode.auto.working;
 
 
 import com.acmerobotics.dashboard.FtcDashboard;
@@ -50,7 +50,7 @@ public class Auto4plus0 extends OpMode {
     Pose endPush1 = new Pose(20, 26, 0);
     Pose startPush2 = new Pose(65, 18, 0);
     Pose endPush2 = new Pose(20, 18, 0);
-    Pose pickUpPose = new Pose(11.5, 35, 0);
+    Pose pickUpPose = new Pose(10.75, 35, 0);
     Pose scoringPose2 = new Pose(39.5, 76, 0);
     Pose scoringPose3 = new Pose(39.5, 80, 0);
     Pose scoringPose4 = new Pose(39.5, 70, 0);
@@ -98,6 +98,7 @@ public class Auto4plus0 extends OpMode {
                 new Point(29, 33),
                 new Point(pickUpPose)
         ))
+                .setPathEndVelocityConstraint(0.5)
                 .setLinearHeadingInterpolation(endPush2.getHeading(), pickUpPose.getHeading())
                 .build();
         score2 =follower.pathBuilder().addPath(new BezierCurve(
@@ -111,6 +112,7 @@ public class Auto4plus0 extends OpMode {
                 new Point(16,27),
                 new Point(pickUpPose)
         )).setLinearHeadingInterpolation(scoringPose2.getHeading(), pickUpPose.getHeading())
+                .setPathEndVelocityConstraint(0.5)
                 .build();
         score3 = follower.pathBuilder().addPath(new BezierCurve(
                 new Point(pickUpPose),
@@ -122,7 +124,11 @@ public class Auto4plus0 extends OpMode {
                 new Point(scoringPose3),
                 new Point(16,27),
                 new Point(pickUpPose)
-        )).setLinearHeadingInterpolation(scoringPose3.getHeading(), pickUpPose.getHeading()).build();
+
+        ))
+
+                .setPathEndVelocityConstraint(0.5)
+                .setLinearHeadingInterpolation(scoringPose3.getHeading(), pickUpPose.getHeading()).build();
         score4 = follower.pathBuilder().addPath(new BezierCurve(
                 new Point(pickUpPose),
                         new Point(11, 70),

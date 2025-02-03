@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.opmode.teleop.Tests;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.pedropathing.localization.GoBildaPinpointDriver;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -13,6 +14,8 @@ import org.firstinspires.ftc.teamcode.config.Subsystems.Drive.MecanumDriveTeleOp
 import org.firstinspires.ftc.teamcode.config.Subsystems.Drive.MecanumPedroTeleop;
 
 @TeleOp
+
+@Disabled
 public class DriveTeleop extends LinearOpMode {
     @Override
     public void runOpMode(){

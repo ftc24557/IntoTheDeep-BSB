@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmode.teleop;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -17,6 +19,8 @@ import org.firstinspires.ftc.teamcode.config.Subsystems.Outtake.PositionalPivotO
 import org.firstinspires.ftc.teamcode.config.Subsystems.TransferMeshing;
 import org.firstinspires.ftc.teamcode.opmode.teleop.Tests.DriveTeleop;
 import org.firstinspires.ftc.vision.opencv.ColorRange;
+
+@Disabled
 @TeleOp
 public class FinalTeleOp extends LinearOpMode {
 

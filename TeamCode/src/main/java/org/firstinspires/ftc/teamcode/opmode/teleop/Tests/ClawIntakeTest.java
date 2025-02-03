@@ -3,11 +3,14 @@ package org.firstinspires.ftc.teamcode.opmode.teleop.Tests;
 import com.arcrobotics.ftclib.gamepad.ButtonReader;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Intake.ClawIntake;
 @TeleOp
+
+@Disabled
 public class ClawIntakeTest extends LinearOpMode {
 
     @Override

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmode.teleop.Tests;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -9,6 +10,8 @@ import org.firstinspires.ftc.teamcode.config.Subsystems.Intake.PivotIntake;
 import org.firstinspires.ftc.vision.opencv.ColorRange;
 
 @TeleOp
+
+@Disabled
 public class CameraTestWClaw extends LinearOpMode {
 
     @Override
