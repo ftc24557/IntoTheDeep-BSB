@@ -17,6 +17,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 
 import org.firstinspires.ftc.teamcode.config.Alarm;
+import org.firstinspires.ftc.teamcode.config.Subsystems.Feedback.FeedBackLed;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Intake.ClawIntake;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Intake.Intake;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Intake.PivotIntake;
@@ -27,6 +28,7 @@ import org.firstinspires.ftc.teamcode.config.Subsystems.Outtake.OuttakePositiona
 import org.firstinspires.ftc.teamcode.config.Subsystems.Outtake.PositionalPivotOuttake;
 import org.firstinspires.ftc.teamcode.pedroPathing.constants.FConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.constants.LConstants;
+import org.firstinspires.ftc.vision.opencv.ColorRange;
 
 @Autonomous(name = "4+0", group = "Sinos Valley")
 public class Auto4plus0 extends OpMode {
@@ -50,10 +52,11 @@ public class Auto4plus0 extends OpMode {
     Pose endPush1 = new Pose(20, 26, 0);
     Pose startPush2 = new Pose(65, 18, 0);
     Pose endPush2 = new Pose(20, 18, 0);
-    Pose pickUpPose = new Pose(10.75, 35, 0);
+    Pose pickUpPose = new Pose(10.25, 35, 0);
     Pose scoringPose2 = new Pose(39.5, 76, 0);
     Pose scoringPose3 = new Pose(39.5, 80, 0);
     Pose scoringPose4 = new Pose(39.5, 70, 0);
+
     private Path scorePreload, park;
     private PathChain preloadToPush, push1, push1ToPush2, push2, push2ToPickUp1, score2, score2ToPickUp2, score3, score3ToPickUp3, score4;
     private Timer pathTimer, actionTimer, opmodeTimer;
@@ -89,7 +92,7 @@ public class Auto4plus0 extends OpMode {
                 .setLinearHeadingInterpolation(endPush1.getHeading(), startPush2.getHeading())
                 .build();
         push2 = follower.pathBuilder().addPath(new BezierCurve(
-                new Point(startPush2),
+                    new Point(startPush2),
                 new Point(endPush2)
         )).setLinearHeadingInterpolation(startPush2.getHeading(), endPush2.getHeading())
                 .build();
@@ -98,7 +101,7 @@ public class Auto4plus0 extends OpMode {
                 new Point(29, 33),
                 new Point(pickUpPose)
         ))
-                .setPathEndVelocityConstraint(0.5)
+                .setZeroPowerAccelerationMultiplier(0.7)
                 .setLinearHeadingInterpolation(endPush2.getHeading(), pickUpPose.getHeading())
                 .build();
         score2 =follower.pathBuilder().addPath(new BezierCurve(
@@ -112,6 +115,7 @@ public class Auto4plus0 extends OpMode {
                 new Point(16,27),
                 new Point(pickUpPose)
         )).setLinearHeadingInterpolation(scoringPose2.getHeading(), pickUpPose.getHeading())
+                .setZeroPowerAccelerationMultiplier(0.7)
                 .setPathEndVelocityConstraint(0.5)
                 .build();
         score3 = follower.pathBuilder().addPath(new BezierCurve(
@@ -126,6 +130,7 @@ public class Auto4plus0 extends OpMode {
                 new Point(pickUpPose)
 
         ))
+                .setZeroPowerAccelerationMultiplier(0.7)
 
                 .setPathEndVelocityConstraint(0.5)
                 .setLinearHeadingInterpolation(scoringPose3.getHeading(), pickUpPose.getHeading()).build();
@@ -254,6 +259,9 @@ public class Auto4plus0 extends OpMode {
     }
     @Override
     public void init(){
+        FeedBackLed led = new FeedBackLed(hardwareMap);
+        led.TurnOnColor(FeedBackLed.Color.PURPLE);
+        //Heitor safadão
 
         telemetry = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
         pathTimer = new Timer();
@@ -272,7 +280,9 @@ public class Auto4plus0 extends OpMode {
         PositionalPivotOuttake pivot = new PositionalPivotOuttake(hardwareMap);
         LiftOuttake lift = new LiftOuttake(hardwareMap);
         outtake = new OuttakePositional(lift, claw, pivot, OuttakePositional.state.INTAKE_WALL);
-        claw.CloseClaw();
+        intake = new Intake(hardwareMap, sliderIntake, clawIntake, pivotIntake, Intake.state.TRANSFER_CLOSE, ColorRange.RED);
+        intake.SetState(Intake.state.AUTON);
+        outtake.SetState(OuttakePositional.state.AUTON);
     }
 
     @Override
@@ -281,6 +291,7 @@ public class Auto4plus0 extends OpMode {
             follower.update();
             autonomousPathUpdate();
         }
+        intake.Loop();
         outtake.Loop();
         telemetry.addData("state: ", pathState);
 

@@ -34,7 +34,7 @@ public class FullIntake extends LinearOpMode {
             if (gamepad1.y){
                 intake.SetState(Intake.state.SEARCH_CLOSE);
             }
-            sliderIntake.SetExtensionCm(extension);
+            sliderIntake.SetExtension(extension);
             intake.Loop();
         }
     }

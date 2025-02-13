@@ -32,7 +32,7 @@ public class FeedBack {
     public void Loop(){
         timer+=1;
 
-        if (timer==10){
+        if (timer==2){
             timer = 0;
             if (on==true){
                 on = false;

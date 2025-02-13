@@ -15,7 +15,8 @@ public class OuttakePositional {
         INIT_POS,
         TRANSFER,
         START_CLIMB,
-        END_CLIMB
+        END_CLIMB,
+        AUTON
     }
     private state currentState;
     public void Stop(){
@@ -91,7 +92,10 @@ public class OuttakePositional {
 
                 liftOuttake.LiftToEndClimb();
                 break;
-
+            case AUTON:
+                pivot.PivotToAuton();
+                claw.CloseClaw();
+                break;
         }
     }
 }

@@ -26,7 +26,9 @@ public class PositionalPivotOuttake {
 
         }
     }
-
+    public void PivotToAuton(){
+        PivotToPosition(OuttakeConstants.AutonPivotArm);
+    }
     public void PivotToTransfer(){
         PivotToPosition(OuttakeConstants.IntakeTransferPivotArm);
 

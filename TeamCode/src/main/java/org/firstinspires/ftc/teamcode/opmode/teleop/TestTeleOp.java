@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.opmode.teleop;
 
-import android.widget.Toolbar;
-
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -23,7 +21,6 @@ import org.firstinspires.ftc.teamcode.config.Subsystems.Outtake.ClawOuttake;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Outtake.LiftOuttake;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Outtake.OuttakePositional;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Outtake.PositionalPivotOuttake;
-import org.firstinspires.ftc.teamcode.config.Subsystems.TransferMeshing;
 import org.firstinspires.ftc.vision.opencv.ColorRange;
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp
@@ -73,7 +70,6 @@ public class TestTeleOp extends LinearOpMode {
 
         boolean Climbing = false;
 
-        TransferMeshing transferMeshing = new TransferMeshing(outtake, intake);
         outtake.SetState(OuttakePositional.state.INTAKE_WALL);
         intake.SetState(Intake.state.TRANSFER_CLOSE);
 
@@ -104,6 +100,7 @@ public class TestTeleOp extends LinearOpMode {
             if (!Climbing) {
                 if (outtakeToggle.stateJustChanged()) {
                         if (outtakeToggle.getState()) {
+                            intake.SetState(Intake.state.SEARCH);
                             outtake.SetState(OuttakePositional.state.OUTTAKE_CHAMBER);
                         } else {
                             outtake.SetState(OuttakePositional.state.INTAKE_WALL);
@@ -118,7 +115,7 @@ public class TestTeleOp extends LinearOpMode {
 
 
             if (gamepadEx2.wasJustPressed(GamepadKeys.Button.A)){
-                intakeExtension = 1;
+                intakeExtension = 0;
                 intake.SetState(Intake.state.TRANSFER_CLOSE);
             }
             if (gamepadEx2.wasJustPressed(GamepadKeys.Button.X)){
@@ -131,14 +128,14 @@ public class TestTeleOp extends LinearOpMode {
             if (gamepadEx2.wasJustPressed(GamepadKeys.Button.Y)){
                 intake.SetState(Intake.state.SEARCH);
             }
-            if (intakeExtension<1) {
+            if (intakeExtension<0) {
+                intakeExtension = 0;
+            }
+            if (intakeExtension>1){
                 intakeExtension = 1;
             }
-            if (intakeExtension>12){
-                intakeExtension = 12;
-            }
-            intakeExtension-=gamepad2.left_stick_y*0.8;
-            sliderIntake.SetExtensionCm(intakeExtension);
+            intakeExtension-=gamepad2.left_stick_y*0.01;
+            sliderIntake.SetExtension(intakeExtension);
             if (gamepadEx2.wasJustPressed(GamepadKeys.Button.RIGHT_BUMPER) && intakeRotAngle>0){
                 intakeRotAngle-= 270/3;
             }
@@ -146,7 +143,7 @@ public class TestTeleOp extends LinearOpMode {
                 intakeRotAngle+= 270/3;
             }
             if (gamepadEx2.wasJustPressed(GamepadKeys.Button.DPAD_UP)){
-                intakeExtension = 12;
+                intakeExtension = 1;
             }
             clawIntake.SetRotAngle(intakeRotAngle);
             if (gamepadEx1.wasJustPressed(GamepadKeys.Button.DPAD_UP)){

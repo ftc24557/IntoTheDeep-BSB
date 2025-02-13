@@ -9,14 +9,17 @@ public class Intake {
     ClawIntake claw;
     PivotIntake pivot;
     CameraIntake camera;
-    public static SliderIntake slider;
+
+
+    SliderIntake slider;
     public enum state {
         CATCH,
         SEARCH,
         TRANSFER_CLOSE,
         TRANSFER_OPEN,
         AUTO_CATCH,
-        SEARCH_CLOSE
+        SEARCH_CLOSE,
+        AUTON
 
     };
     public state CurrentState;
@@ -40,30 +43,30 @@ public class Intake {
     public void SetState(state state){
         CurrentState = state;
         switch (state){
+            case AUTON:
+                pivot.PivotToAuton();
+                claw.CloseClaw();
+                break;
+
             case CATCH:
                 pivot.PivotToCatch();
                 claw.CloseClaw();
-                slider.SetState(SliderIntake.state.CATCHING);
                 break;
             case SEARCH:
                 pivot.PivotToSearch();
                 claw.OpenClaw();
-                slider.SetState(SliderIntake.state.CATCHING);
                 break;
             case TRANSFER_CLOSE:
                 pivot.PivotToTransfer();
                 claw.CloseClaw();
-                slider.SetState(SliderIntake.state.TRANSFER);
                 break;
             case TRANSFER_OPEN:
                 pivot.PivotToTransfer();
                 claw.OpenClaw();
-                slider.SetState(SliderIntake.state.TRANSFER);
                 break;
             case SEARCH_CLOSE:
                 pivot.PivotToSearch();
                 claw.CloseClaw();
-                slider.SetState(SliderIntake.state.CATCHING);
                 break;
 
             case AUTO_CATCH: // dont use this yet

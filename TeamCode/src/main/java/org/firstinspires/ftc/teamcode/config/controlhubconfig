@@ -1,0 +1,58 @@
+Tração 2.0
+CONTROL
+0 - motorLift0
+1 - motorLift1
+2 - SliderIntake
+3 - pivot1
+
+EXPANSION
+0 - rightFront
+1 - rightRear
+2 - leftFront
+3 - leftRear
+
+NOVA
+
+CONTROL
+0 - leftFront
+1 - leftRear
+2 - motorLift0
+
+EXPANSION
+0 - rightFront
+1 - rightRear
+2 - motorLift1
+
+Servo 2.0
+CONTROL
+0 - servoClaw
+1 - servoRot
+2 - pivotIntake
+3 - arm0
+4 - arm1
+
+EXPANSION
+0 - intakePivot
+1 - intakeClaw
+2 - intakeRot
+
+NOVA
+
+EXPANSION
+
+NOVA
+CONTROL
+0- intakeClaw
+1- intakeRot
+2- IntakePivot
+3- servoRot
+4- servoPivot0
+5- slider0
+
+EXPANSION
+0- servoClaw
+1-
+2-
+3-
+4- servoPivot1
+5- slider1

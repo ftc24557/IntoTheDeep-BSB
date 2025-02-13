@@ -9,14 +9,16 @@ public class PivotIntake {
         PivotServo = hardwareMap.get(Servo.class, IntakeConstants.HMPivot);
     }
     public void PivotToSearch(){
-        PivotServo.setPosition(IntakeConstants.SearchingPivot);
+        PivotServo.setPosition(1-IntakeConstants.SearchingPivot);
     }
     public void PivotToCatch(){
-        PivotServo.setPosition(IntakeConstants.CatchPivot);
+        PivotServo.setPosition(1-IntakeConstants.CatchPivot);
 
     }
+
+    public void PivotToAuton() {PivotServo.setPosition(1-IntakeConstants.Auton);}
     public void PivotToTransfer(){
-        PivotServo.setPosition(IntakeConstants.TransferPivot);
+        PivotServo.setPosition(1-IntakeConstants.TransferPivot);
     }
 
 }
