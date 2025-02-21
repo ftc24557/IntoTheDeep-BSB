@@ -41,16 +41,28 @@ public class OuttakePositional {
         Loop.run();
     }
     public void SetState(state state){
-        currentState = state;
         switch (state){
             case INTAKE_WALL:
-                claw.OpenClaw();
-                claw.RotToIntake();
-                liftOuttake.LiftToIntake();
-                pivot.PivotToWallIntake();
+                if (currentState == OuttakePositional.state.OUTTAKE_CHAMBER){
+                    pivot.PivotToScore();
+                    Alarm alarmScore = new Alarm(300, ()->{
+                        claw.OpenClaw();
+                        claw.RotToIntake();
+                        liftOuttake.LiftToIntake();
+                        pivot.PivotToWallIntake();
+                    });
+                    alarmScore.Run();
+                } else {
+                    claw.OpenClaw();
+                    claw.RotToIntake();
+                    liftOuttake.LiftToIntake();
+                    pivot.PivotToWallIntake();
+
+                }
                 break;
             case OUTTAKE_CHAMBER:
                 claw.CloseClaw();
+
                 Runnable SetToOuttakeChamber = ()->{
                     if (currentState== OuttakePositional.state.OUTTAKE_CHAMBER){
                         pivot.PivotToSpecimen();
@@ -97,5 +109,6 @@ public class OuttakePositional {
                 claw.CloseClaw();
                 break;
         }
+        currentState = state;
     }
 }

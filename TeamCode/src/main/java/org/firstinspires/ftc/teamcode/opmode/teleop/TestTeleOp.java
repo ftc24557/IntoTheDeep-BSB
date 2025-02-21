@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.config.Subsystems.Drive.MecanumDriveTeleOp
 import org.firstinspires.ftc.teamcode.config.Subsystems.Feedback.FeedBack;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Feedback.FeedBackLed;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Feedback.FeedBackSensor;
+import org.firstinspires.ftc.teamcode.config.Subsystems.Intake.Camera.CameraIntake;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Intake.ClawIntake;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Intake.Intake;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Intake.PivotIntake;
@@ -52,7 +53,7 @@ public class TestTeleOp extends LinearOpMode {
         PivotIntake pivotIntake = new PivotIntake(hardwareMap);
         SliderIntake sliderIntake = new SliderIntake(hardwareMap);
         Intake intake = new Intake(hardwareMap, sliderIntake, clawIntake, pivotIntake, Intake.state.TRANSFER_CLOSE, ColorRange.BLUE);
-        double intakeExtension = 1;
+        double intakeExtension = 0;
         double intakeRotAngle = 270/2;
 
 
@@ -89,7 +90,7 @@ public class TestTeleOp extends LinearOpMode {
             if (gamepadEx1.wasJustPressed(GamepadKeys.Button.X)){
                 transferMeshing.Transfer();
             }*/
-            drive.Loop(-gamepad1.left_stick_x, gamepad1.left_stick_y, -gamepad1.right_stick_x);
+            drive.Loop(gamepad1.left_stick_x, -gamepad1.left_stick_y, -gamepad1.right_stick_x);
             if (gamepadEx1.wasJustPressed(GamepadKeys.Button.START)){
                 drive.ResetOdom();
             }
@@ -113,13 +114,16 @@ public class TestTeleOp extends LinearOpMode {
 
 
 
-
+            if (gamepadEx2.wasJustPressed(GamepadKeys.Button.B)){
+                intake.SetState(Intake.state.AUTO_CATCH);
+            }
             if (gamepadEx2.wasJustPressed(GamepadKeys.Button.A)){
                 intakeExtension = 0;
                 intake.SetState(Intake.state.TRANSFER_CLOSE);
             }
             if (gamepadEx2.wasJustPressed(GamepadKeys.Button.X)){
                 intake.SetState(Intake.state.CATCH);
+
                 Alarm alarm = new Alarm(500, ()->{
                     intake.SetState(Intake.state.SEARCH_CLOSE);
                 });
@@ -129,12 +133,12 @@ public class TestTeleOp extends LinearOpMode {
                 intake.SetState(Intake.state.SEARCH);
             }
             if (intakeExtension<0) {
-                intakeExtension = 0;
+                intakeExtension = 0.1;
             }
-            if (intakeExtension>1){
-                intakeExtension = 1;
+            if (intakeExtension>0.4){
+                intakeExtension = 0.4;
             }
-            intakeExtension-=gamepad2.left_stick_y*0.01;
+            intakeExtension-=gamepad2.left_stick_y*0.02;
             sliderIntake.SetExtension(intakeExtension);
             if (gamepadEx2.wasJustPressed(GamepadKeys.Button.RIGHT_BUMPER) && intakeRotAngle>0){
                 intakeRotAngle-= 270/3;
@@ -143,7 +147,8 @@ public class TestTeleOp extends LinearOpMode {
                 intakeRotAngle+= 270/3;
             }
             if (gamepadEx2.wasJustPressed(GamepadKeys.Button.DPAD_UP)){
-                intakeExtension = 1;
+                intakeExtension = 0.4;
+                intake.SetState(Intake.state.SEARCH);
             }
             clawIntake.SetRotAngle(intakeRotAngle);
             if (gamepadEx1.wasJustPressed(GamepadKeys.Button.DPAD_UP)){

@@ -1,5 +1,10 @@
 package org.firstinspires.ftc.teamcode.config.Subsystems.Drive;
 
+import static com.pedropathing.follower.FollowerConstants.leftFrontMotorDirection;
+import static com.pedropathing.follower.FollowerConstants.leftRearMotorDirection;
+import static com.pedropathing.follower.FollowerConstants.rightFrontMotorDirection;
+import static com.pedropathing.follower.FollowerConstants.rightRearMotorDirection;
+
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.GoBildaPinpointDriver;
@@ -27,9 +32,10 @@ public class MecanumDriveTeleOp {
         leftFront = hardwareMap.get(DcMotor.class, "leftFront");
         rightRear = hardwareMap.get(DcMotor.class, "rightRear");
         leftRear = hardwareMap.get(DcMotor.class, "leftRear");
+        leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
+
         odom = hardwareMap.get(GoBildaPinpointDriver.class,"odom");
 
         odom.resetPosAndIMU();

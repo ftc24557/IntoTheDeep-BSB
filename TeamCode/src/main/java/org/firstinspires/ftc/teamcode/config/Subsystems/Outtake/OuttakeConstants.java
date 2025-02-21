@@ -18,10 +18,11 @@ public class OuttakeConstants {
     public static String HMPivotArm1 = "arm1";
     public static int ReversedServo = 1;
     //Positional
+    public static double ScoreSpecPivotArm = 0.3;
     public static double BasketPivotArm = 0.75;
     public static double IntakeTransferPivotArm = 0.0;
-    public static double SpecimenPivotArm = 0.17;
-    public static double IntakeWallPivotArm = 0.9;
+    public static double SpecimenPivotArm = 0.39;
+    public static double IntakeWallPivotArm = 1;
     public static double AutonPivotArm = 0.55;
 
     //PIDF

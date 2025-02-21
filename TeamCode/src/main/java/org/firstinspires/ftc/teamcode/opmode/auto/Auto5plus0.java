@@ -1,4 +1,5 @@
-package org.firstinspires.ftc.teamcode.opmode.auto.working;
+package org.firstinspires.ftc.teamcode.opmode.auto;
+
 
 
 import com.acmerobotics.dashboard.FtcDashboard;
@@ -30,8 +31,8 @@ import org.firstinspires.ftc.teamcode.pedroPathing.constants.FConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.constants.LConstants;
 import org.firstinspires.ftc.vision.opencv.ColorRange;
 
-@Autonomous(name = "4+0", group = "Sinos Valley")
-public class Auto4plus0 extends OpMode {
+@Autonomous(name = "5+0", group = "BSB")
+public class Auto5plus0 extends OpMode {
 
     String[] displayStates = {
             "Scoring preloaded",
@@ -46,19 +47,21 @@ public class Auto4plus0 extends OpMode {
     };
 
     private Follower follower;
-    Pose startingPose = new Pose(10.25,65,0);
+    Pose startingPose = new Pose(10,65,0);
     Pose scoringPose1 = new Pose(39.5, 72, 0);
-    Pose startPush1 = new Pose(61, 37, 0);
-    Pose endPush1 = new Pose(20, 26, 0);
-    Pose startPush2 = new Pose(65, 18, 0);
-    Pose endPush2 = new Pose(20, 18, 0);
+    Pose startPush1 = new Pose(61, 37, 90);
+    Pose endPush1 = new Pose(20, 26, 90);
+    Pose startPush2 = new Pose(65, 18, 90);
+    Pose endPush2 = new Pose(20, 18, 90);
+    Pose startPush3 = new Pose(65,9.2, 90);
+    Pose endPush3 = new Pose(20, 9.2, 90);
     Pose pickUpPose = new Pose(10.25, 35, 0);
     Pose scoringPose2 = new Pose(39.5, 76, 0);
     Pose scoringPose3 = new Pose(39.5, 80, 0);
     Pose scoringPose4 = new Pose(39.5, 70, 0);
 
     private Path scorePreload, park;
-    private PathChain preloadToPush, push1, push1ToPush2, push2, push2ToPickUp1, score2, score2ToPickUp2, score3, score3ToPickUp3, score4;
+    private PathChain preloadToPush, push1, push1ToPush2, push2, push2ToPush3, push3 , push3ToPickUp1, score2, score2ToPickUp2, score3, score3ToPickUp3, score4;
     private Timer pathTimer, actionTimer, opmodeTimer;
     private int pathState;
     private boolean inDelay = false;
@@ -70,75 +73,86 @@ public class Auto4plus0 extends OpMode {
         scorePreload = new Path(new BezierLine(new Point(startingPose), new Point(scoringPose1)));
         scorePreload.setLinearHeadingInterpolation(startingPose.getHeading(), scoringPose1.getHeading());
         preloadToPush = follower.pathBuilder().addPath(new BezierCurve(
-                new Point(scoringPose1),
-                new Point(7.408, 68.759, Point.CARTESIAN),
-                new Point(14.817, 35, Point.CARTESIAN),
-                new Point(startPush1)
-        ))
+                        new Point(scoringPose1),
+                        new Point(7.408, 68.759, Point.CARTESIAN),
+                        new Point(14.817, 35, Point.CARTESIAN),
+                        new Point(startPush1)
+                ))
                 .setLinearHeadingInterpolation(scoringPose1.getHeading(), startPush1.getHeading())
                 .build();
         push1 = follower.pathBuilder().addPath(new BezierCurve(
-                new Point(startPush1),
-                new Point(new Pose(64.4, 23.6, 0)),
-                new Point(endPush1)
-        ))
+                        new Point(startPush1),
+                        new Point(new Pose(64.4, 23.6, 0)),
+                        new Point(endPush1)
+                ))
                 .setLinearHeadingInterpolation(startPush1.getHeading(), endPush1.getHeading())
                 .build();
         push1ToPush2  =follower.pathBuilder().addPath(new BezierCurve(
-                new Point(endPush1),
-                new Point(76, 33),
-                new Point(startPush2)
-        ))
+                        new Point(endPush1),
+                        new Point(76, 33),
+                        new Point(startPush2)
+                ))
                 .setLinearHeadingInterpolation(endPush1.getHeading(), startPush2.getHeading())
                 .build();
         push2 = follower.pathBuilder().addPath(new BezierCurve(
-                    new Point(startPush2),
-                new Point(endPush2)
-        )).setLinearHeadingInterpolation(startPush2.getHeading(), endPush2.getHeading())
+                        new Point(startPush2),
+                        new Point(endPush2)
+                )).setLinearHeadingInterpolation(startPush2.getHeading(), endPush2.getHeading())
                 .build();
-        push2ToPickUp1 = follower.pathBuilder().addPath(new BezierCurve(
+        push2ToPush3 = follower.pathBuilder().addPath(new BezierCurve(
                 new Point(endPush2),
-                new Point(29, 33),
-                new Point(pickUpPose)
-        ))
+                new Point(65,18),
+                new Point(startPush3)
+        )).setLinearHeadingInterpolation(endPush2.getHeading(),startPush3.getHeading())
+                .build();
+        push3 = follower.pathBuilder().addPath(new BezierCurve(
+                new Point(startPush3),
+                new Point(endPush3)
+        )).setLinearHeadingInterpolation(startPush3.getHeading(), endPush3.getHeading())
+                .build();
+        push3ToPickUp1 = follower.pathBuilder().addPath(new BezierCurve(
+                        new Point(endPush3),
+                        new Point(29, 33),
+                        new Point(pickUpPose)
+                ))
                 .setZeroPowerAccelerationMultiplier(0.7)
                 .setLinearHeadingInterpolation(endPush2.getHeading(), pickUpPose.getHeading())
                 .build();
         score2 =follower.pathBuilder().addPath(new BezierCurve(
-                new Point(pickUpPose),
+                        new Point(pickUpPose),
                         new Point(11, 70),
-                new Point(scoringPose2)
-        )).setLinearHeadingInterpolation(pickUpPose.getHeading(), scoringPose2.getHeading())
+                        new Point(scoringPose2)
+                )).setLinearHeadingInterpolation(pickUpPose.getHeading(), scoringPose2.getHeading())
                 .build();
         score2ToPickUp2 = follower.pathBuilder().addPath(new BezierCurve(
-                new Point(scoringPose2),
-                new Point(16,27),
-                new Point(pickUpPose)
-        )).setLinearHeadingInterpolation(scoringPose2.getHeading(), pickUpPose.getHeading())
+                        new Point(scoringPose2),
+                        new Point(16,27),
+                        new Point(pickUpPose)
+                )).setLinearHeadingInterpolation(scoringPose2.getHeading(), pickUpPose.getHeading())
                 .setZeroPowerAccelerationMultiplier(0.7)
                 .setPathEndVelocityConstraint(0.5)
                 .build();
         score3 = follower.pathBuilder().addPath(new BezierCurve(
-                new Point(pickUpPose),
-                new Point(11, 70),
-                new Point(scoringPose3)
-        )).setLinearHeadingInterpolation(pickUpPose.getHeading(), scoringPose3.getHeading())
+                        new Point(pickUpPose),
+                        new Point(11, 70),
+                        new Point(scoringPose3)
+                )).setLinearHeadingInterpolation(pickUpPose.getHeading(), scoringPose3.getHeading())
                 .build();
         score3ToPickUp3 = follower.pathBuilder().addPath(new BezierCurve(
-                new Point(scoringPose3),
-                new Point(16,27),
-                new Point(pickUpPose)
+                        new Point(scoringPose3),
+                        new Point(16,27),
+                        new Point(pickUpPose)
 
-        ))
+                ))
                 .setZeroPowerAccelerationMultiplier(0.7)
 
                 .setPathEndVelocityConstraint(0.5)
                 .setLinearHeadingInterpolation(scoringPose3.getHeading(), pickUpPose.getHeading()).build();
         score4 = follower.pathBuilder().addPath(new BezierCurve(
-                new Point(pickUpPose),
+                        new Point(pickUpPose),
                         new Point(11, 70),
-                new Point(scoringPose4)
-        )).setLinearHeadingInterpolation(0,0)
+                        new Point(scoringPose4)
+                )).setLinearHeadingInterpolation(0,0)
                 .build();
         park = new Path(new BezierLine(new Point(scoringPose4),new Point(pickUpPose)));
         park.setLinearHeadingInterpolation(scoringPose4.getHeading(), pickUpPose.getHeading());
@@ -180,7 +194,7 @@ public class Auto4plus0 extends OpMode {
                 break;
             case 5:
                 if (!follower.isBusy()){
-                    follower.followPath(push2ToPickUp1,true);
+                    follower.followPath(push3ToPickUp1,true);
                     setPathState(6);
                 }
                 break;

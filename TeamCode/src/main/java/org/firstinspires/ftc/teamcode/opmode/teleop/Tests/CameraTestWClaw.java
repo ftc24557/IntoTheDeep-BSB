@@ -11,7 +11,6 @@ import org.firstinspires.ftc.vision.opencv.ColorRange;
 
 @TeleOp
 
-@Disabled
 public class CameraTestWClaw extends LinearOpMode {
 
     @Override

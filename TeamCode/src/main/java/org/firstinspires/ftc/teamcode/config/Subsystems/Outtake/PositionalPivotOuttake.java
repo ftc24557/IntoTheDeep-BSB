@@ -26,6 +26,9 @@ public class PositionalPivotOuttake {
 
         }
     }
+    public void PivotToScore(){
+        PivotToPosition(OuttakeConstants.ScoreSpecPivotArm);
+    }
     public void PivotToAuton(){
         PivotToPosition(OuttakeConstants.AutonPivotArm);
     }
