@@ -52,10 +52,10 @@ public class Auto4plus0 extends OpMode {
     Pose endPush1 = new Pose(20, 26, 0);
     Pose startPush2 = new Pose(65, 18, 0);
     Pose endPush2 = new Pose(20, 18, 0);
-    Pose pickUpPose = new Pose(10.25, 35, 0);
-    Pose scoringPose2 = new Pose(39.5, 76, 0);
-    Pose scoringPose3 = new Pose(39.5, 80, 0);
-    Pose scoringPose4 = new Pose(39.5, 70, 0);
+            Pose pickUpPose = new Pose(12, 35, 0);
+    Pose scoringPose2 = new Pose(37, 76, 0);
+    Pose scoringPose3 = new Pose(37, 80, 0);
+    Pose scoringPose4 = new Pose(37, 70, 0);
 
     private Path scorePreload, park;
     private PathChain preloadToPush, push1, push1ToPush2, push2, push2ToPickUp1, score2, score2ToPickUp2, score3, score3ToPickUp3, score4;
@@ -71,8 +71,8 @@ public class Auto4plus0 extends OpMode {
         scorePreload.setLinearHeadingInterpolation(startingPose.getHeading(), scoringPose1.getHeading());
         preloadToPush = follower.pathBuilder().addPath(new BezierCurve(
                 new Point(scoringPose1),
-                new Point(7.408, 68.759, Point.CARTESIAN),
-                new Point(14.817, 35, Point.CARTESIAN),
+                new Point(4, 68.759, Point.CARTESIAN),
+                new Point(10, 35, Point.CARTESIAN),
                 new Point(startPush1)
         ))
                 .setLinearHeadingInterpolation(scoringPose1.getHeading(), startPush1.getHeading())
@@ -101,7 +101,7 @@ public class Auto4plus0 extends OpMode {
                 new Point(29, 33),
                 new Point(pickUpPose)
         ))
-                .setZeroPowerAccelerationMultiplier(0.7)
+                .setPathEndVelocityConstraint(0.9)
                 .setLinearHeadingInterpolation(endPush2.getHeading(), pickUpPose.getHeading())
                 .build();
         score2 =follower.pathBuilder().addPath(new BezierCurve(
@@ -115,8 +115,7 @@ public class Auto4plus0 extends OpMode {
                 new Point(16,27),
                 new Point(pickUpPose)
         )).setLinearHeadingInterpolation(scoringPose2.getHeading(), pickUpPose.getHeading())
-                .setZeroPowerAccelerationMultiplier(0.7)
-                .setPathEndVelocityConstraint(0.5)
+                .setPathEndVelocityConstraint(0.9)
                 .build();
         score3 = follower.pathBuilder().addPath(new BezierCurve(
                 new Point(pickUpPose),
@@ -130,9 +129,8 @@ public class Auto4plus0 extends OpMode {
                 new Point(pickUpPose)
 
         ))
-                .setZeroPowerAccelerationMultiplier(0.7)
 
-                .setPathEndVelocityConstraint(0.5)
+                .setPathEndVelocityConstraint(0.9)
                 .setLinearHeadingInterpolation(scoringPose3.getHeading(), pickUpPose.getHeading()).build();
         score4 = follower.pathBuilder().addPath(new BezierCurve(
                 new Point(pickUpPose),

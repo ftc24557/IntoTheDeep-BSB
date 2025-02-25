@@ -48,20 +48,22 @@ public class Auto5plus0 extends OpMode {
 
     private Follower follower;
     Pose startingPose = new Pose(10,65,0);
-    Pose scoringPose1 = new Pose(39.5, 72, 0);
-    Pose startPush1 = new Pose(61, 37, 90);
-    Pose endPush1 = new Pose(20, 26, 90);
-    Pose startPush2 = new Pose(65, 18, 90);
-    Pose endPush2 = new Pose(20, 18, 90);
-    Pose startPush3 = new Pose(65,9.2, 90);
-    Pose endPush3 = new Pose(20, 9.2, 90);
-    Pose pickUpPose = new Pose(10.25, 35, 0);
-    Pose scoringPose2 = new Pose(39.5, 76, 0);
-    Pose scoringPose3 = new Pose(39.5, 80, 0);
-    Pose scoringPose4 = new Pose(39.5, 70, 0);
+    Pose scoringPose1 = new Pose(37, 72, 0);
+    Pose startPush1 = new Pose(60, 40, Math.toRadians(0));
+    Pose endPush1 = new Pose(25, 30, Math.toRadians(0));
+    Pose startPush2 = new Pose(60, 19, Math.toRadians(0));
+    Pose endPush2 = new Pose(25, 19, Math.toRadians(0));
+    Pose startPush3 = new Pose(60,13, Math.toRadians(90));
+    Pose endPush3 = new Pose(25, 13, Math.toRadians(90));
+    Pose pickUpPose = new Pose(10, 35, 0);
+    Pose scoringPose2 = new Pose(36.95, 76, 0);
+    Pose scoringPose3 = new Pose(36.95, 74, 0);
+    Pose scoringPose4 = new Pose(36.95, 70, 0);
 
     private Path scorePreload, park;
-    private PathChain preloadToPush, push1, push1ToPush2, push2, push2ToPush3, push3 , push3ToPickUp1, score2, score2ToPickUp2, score3, score3ToPickUp3, score4;
+    private PathChain   push3ToPickUp1, score2, score2ToPickUp2, score3, score3ToPickUp3, score4;
+    private Path preloadToPush, push1, push1ToPush2, push2, push2ToPush3, push3;
+    private PathChain pushAll;
     private Timer pathTimer, actionTimer, opmodeTimer;
     private int pathState;
     private boolean inDelay = false;
@@ -72,55 +74,65 @@ public class Auto5plus0 extends OpMode {
     public void buildPaths(){
         scorePreload = new Path(new BezierLine(new Point(startingPose), new Point(scoringPose1)));
         scorePreload.setLinearHeadingInterpolation(startingPose.getHeading(), scoringPose1.getHeading());
-        preloadToPush = follower.pathBuilder().addPath(new BezierCurve(
+        preloadToPush = new Path(new BezierCurve(
                         new Point(scoringPose1),
-                        new Point(7.408, 68.759, Point.CARTESIAN),
-                        new Point(14.817, 35, Point.CARTESIAN),
+                        new Point(20, 68.759, Point.CARTESIAN),
+                        new Point(10, 35, Point.CARTESIAN),
                         new Point(startPush1)
-                ))
-                .setLinearHeadingInterpolation(scoringPose1.getHeading(), startPush1.getHeading())
-                .build();
-        push1 = follower.pathBuilder().addPath(new BezierCurve(
+                ));
+                preloadToPush.setLinearHeadingInterpolation(scoringPose1.getHeading(), startPush1.getHeading());
+
+        push1 = new Path(new BezierCurve(
                         new Point(startPush1),
                         new Point(new Pose(64.4, 23.6, 0)),
                         new Point(endPush1)
-                ))
-                .setLinearHeadingInterpolation(startPush1.getHeading(), endPush1.getHeading())
-                .build();
-        push1ToPush2  =follower.pathBuilder().addPath(new BezierCurve(
+                ));
+        push1.setLinearHeadingInterpolation(startPush1.getHeading(), endPush1.getHeading());
+
+        push1ToPush2 = new Path(new BezierCurve(
                         new Point(endPush1),
                         new Point(76, 33),
                         new Point(startPush2)
-                ))
-                .setLinearHeadingInterpolation(endPush1.getHeading(), startPush2.getHeading())
-                .build();
-        push2 = follower.pathBuilder().addPath(new BezierCurve(
+                ));
+        push1ToPush2
+                .setLinearHeadingInterpolation(endPush1.getHeading(), startPush2.getHeading());
+
+        push2 = new Path(new BezierCurve(
                         new Point(startPush2),
                         new Point(endPush2)
-                )).setLinearHeadingInterpolation(startPush2.getHeading(), endPush2.getHeading())
-                .build();
-        push2ToPush3 = follower.pathBuilder().addPath(new BezierCurve(
+                ));
+        push2.setLinearHeadingInterpolation(startPush2.getHeading(), endPush2.getHeading());
+        push2ToPush3 = new Path(new BezierCurve(
                 new Point(endPush2),
-                new Point(65,18),
+                new Point(65,30),
                 new Point(startPush3)
-        )).setLinearHeadingInterpolation(endPush2.getHeading(),startPush3.getHeading())
-                .build();
-        push3 = follower.pathBuilder().addPath(new BezierCurve(
+        ));
+        push2ToPush3.setLinearHeadingInterpolation(endPush2.getHeading(),startPush3.getHeading());
+
+        push3 = new Path(new BezierCurve(
                 new Point(startPush3),
                 new Point(endPush3)
-        )).setLinearHeadingInterpolation(startPush3.getHeading(), endPush3.getHeading())
+        ));
+        push3.setLinearHeadingInterpolation(startPush3.getHeading(), endPush3.getHeading());
+        pushAll = follower.pathBuilder()
+                .addPath(preloadToPush)
+                .addPath(push1)
+                .addPath(push1ToPush2)
+                .addPath(push2)
+                .addPath(push2ToPush3)
+                .addPath(push3)
                 .build();
         push3ToPickUp1 = follower.pathBuilder().addPath(new BezierCurve(
                         new Point(endPush3),
                         new Point(29, 33),
                         new Point(pickUpPose)
                 ))
-                .setZeroPowerAccelerationMultiplier(0.7)
+                .setZeroPowerAccelerationMultiplier(0.1)
                 .setLinearHeadingInterpolation(endPush2.getHeading(), pickUpPose.getHeading())
                 .build();
         score2 =follower.pathBuilder().addPath(new BezierCurve(
                         new Point(pickUpPose),
-                        new Point(11, 70),
+                        new Point(20, 50),
                         new Point(scoringPose2)
                 )).setLinearHeadingInterpolation(pickUpPose.getHeading(), scoringPose2.getHeading())
                 .build();
@@ -129,12 +141,12 @@ public class Auto5plus0 extends OpMode {
                         new Point(16,27),
                         new Point(pickUpPose)
                 )).setLinearHeadingInterpolation(scoringPose2.getHeading(), pickUpPose.getHeading())
-                .setZeroPowerAccelerationMultiplier(0.7)
+                .setZeroPowerAccelerationMultiplier(0.1)
                 .setPathEndVelocityConstraint(0.5)
                 .build();
         score3 = follower.pathBuilder().addPath(new BezierCurve(
                         new Point(pickUpPose),
-                        new Point(11, 70),
+                        new Point(20, 50),
                         new Point(scoringPose3)
                 )).setLinearHeadingInterpolation(pickUpPose.getHeading(), scoringPose3.getHeading())
                 .build();
@@ -144,13 +156,13 @@ public class Auto5plus0 extends OpMode {
                         new Point(pickUpPose)
 
                 ))
-                .setZeroPowerAccelerationMultiplier(0.7)
+                .setZeroPowerAccelerationMultiplier(0.1)
 
                 .setPathEndVelocityConstraint(0.5)
                 .setLinearHeadingInterpolation(scoringPose3.getHeading(), pickUpPose.getHeading()).build();
         score4 = follower.pathBuilder().addPath(new BezierCurve(
                         new Point(pickUpPose),
-                        new Point(11, 70),
+                        new Point(20, 50),
                         new Point(scoringPose4)
                 )).setLinearHeadingInterpolation(0,0)
                 .build();
@@ -165,22 +177,23 @@ public class Auto5plus0 extends OpMode {
         switch (pathState) {
             case 0:
                 follower.followPath(scorePreload,true);
-                setPathState(1);
+                setPathState(2);
                 break;
-            case 1:
+            /*case 1:
                 if (!follower.isBusy()){
                     outtake.SetState(OuttakePositional.state.INTAKE_WALL);
                     follower.followPath(preloadToPush,true);
                     setPathState(2);
                 }
-                break;
+                break;*/
             case 2:
                 if (!follower.isBusy()){
-                    follower.followPath(push1,true);
-                    setPathState(3);
+                    outtake.SetState(OuttakePositional.state.INTAKE_WALL);
+                    follower.followPath(pushAll,true);
+                    setPathState(5);
                 }
                 break;
-            case 3:
+            /*case 3:
                 if (!follower.isBusy()){
                     follower.followPath(push1ToPush2,true);
                     setPathState(4);
@@ -191,7 +204,7 @@ public class Auto5plus0 extends OpMode {
                     follower.followPath(push2,true);
                     setPathState(5);
                 }
-                break;
+                break;*/
             case 5:
                 if (!follower.isBusy()){
                     follower.followPath(push3ToPickUp1,true);
@@ -202,7 +215,7 @@ public class Auto5plus0 extends OpMode {
                 if (!follower.isBusy()){
                     if (!inDelay){
                         inDelay = true;
-                        Alarm score2Alarm = new Alarm(700, ()->{
+                        Alarm score2Alarm = new Alarm(300, ()->{
                             inDelay =false;
                         });
                         score2Alarm.Run();
@@ -223,7 +236,7 @@ public class Auto5plus0 extends OpMode {
                 if (!follower.isBusy()){
                     if (!inDelay){
                         inDelay = true;
-                        Alarm score3Alarm = new Alarm(700, ()->{
+                        Alarm score3Alarm = new Alarm(300, ()->{
                             inDelay = false;
                         });
                         score3Alarm.Run();
@@ -244,7 +257,7 @@ public class Auto5plus0 extends OpMode {
                 if (!follower.isBusy()){
                     if (!inDelay){
                         inDelay = true;
-                        Alarm score4Alarm = new Alarm(700, ()->{
+                        Alarm score4Alarm = new Alarm(300, ()->{
                             inDelay = false;
                         });
                         score4Alarm.Run();
@@ -268,7 +281,8 @@ public class Auto5plus0 extends OpMode {
         outtake.SetState(OuttakePositional.state.OUTTAKE_CHAMBER);
         opmodeTimer = new Timer();
         inDelay = true;
-        Alarm alarmStart = new Alarm(800, ()->{inDelay=false;});
+        intake.SetState(Intake.state.TRANSFER_CLOSE);
+        Alarm alarmStart = new Alarm(500, ()->{inDelay=false;});
         alarmStart.Run();
     }
     @Override

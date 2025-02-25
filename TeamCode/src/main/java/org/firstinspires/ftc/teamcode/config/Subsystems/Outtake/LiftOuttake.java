@@ -22,8 +22,6 @@ public class LiftOuttake {
                 break;
 
         }
-        MotorLift0.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        MotorLift1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         MotorLift0.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         MotorLift1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }

@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.config.Subsystems.Outtake;
 
 public class OuttakeConstants {
     //Global
-    public static int DelayInToOut = 750;
+    public static int DelayInToOut = 400;
     //Outtake Claw Subsystem
     public static String HMClaw = "servoClaw";
     public static double ClosedClaw = 1;
@@ -21,9 +21,9 @@ public class OuttakeConstants {
     public static double ScoreSpecPivotArm = 0.3;
     public static double BasketPivotArm = 0.75;
     public static double IntakeTransferPivotArm = 0.0;
-    public static double SpecimenPivotArm = 0.39;
+    public static double SpecimenPivotArm = 0.37;
     public static double IntakeWallPivotArm = 1;
-    public static double AutonPivotArm = 0.55;
+    public static double AutonPivotArm = 0.6;
 
     //PIDF
     public static double PivotkP = 0;
@@ -45,8 +45,8 @@ public class OuttakeConstants {
     public static int SetPointOuttakeChamberLift = 745;
     public static int SetPointOuttakeBasketLift = 3000;
     public static int SetPointTransferLift = 0;
-    public static int SetPointStartLift = 1200;
-    public static int SetPointEndLift = 900;
+        public static int SetPointStartLift = 1100;
+    public static int SetPointEndLift = 0;
     public static double LiftkP = 0.01;
     public static double LiftkI = 0;
     public static double LiftkD = 0;

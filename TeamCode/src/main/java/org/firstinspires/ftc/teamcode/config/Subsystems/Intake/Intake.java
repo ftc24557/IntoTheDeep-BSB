@@ -70,7 +70,10 @@ public class Intake {
 
             case CATCH:
                 pivot.PivotToCatch();
-                claw.CloseClaw();
+                Alarm alarmCatch = new Alarm(100, ()->{
+                    claw.CloseClaw();
+                });
+                alarmCatch.Run();
                 break;
             case SEARCH:
                 pivot.PivotToSearch();

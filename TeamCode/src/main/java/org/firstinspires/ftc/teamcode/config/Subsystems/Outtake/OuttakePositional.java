@@ -45,7 +45,7 @@ public class OuttakePositional {
             case INTAKE_WALL:
                 if (currentState == OuttakePositional.state.OUTTAKE_CHAMBER){
                     pivot.PivotToScore();
-                    Alarm alarmScore = new Alarm(300, ()->{
+                    Alarm alarmScore = new Alarm(100, ()->{
                         claw.OpenClaw();
                         claw.RotToIntake();
                         liftOuttake.LiftToIntake();

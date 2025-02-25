@@ -28,15 +28,15 @@ public class FConstants {
         FollowerConstants.forwardZeroPowerAcceleration = -30.361619576177997;
         FollowerConstants.lateralZeroPowerAcceleration = -76.75477349285669;
 
-        FollowerConstants.translationalPIDFCoefficients.setCoefficients(0.2,0.0,0.0,0);
+        FollowerConstants.translationalPIDFCoefficients.setCoefficients(0.4,0.0,0.02,0);
         FollowerConstants.useSecondaryTranslationalPID = false;
         FollowerConstants.secondaryTranslationalPIDFCoefficients.setCoefficients(0.1,0,0.01,0); // Not being used, @see useSecondaryTranslationalPID
 
         FollowerConstants.headingPIDFCoefficients.setCoefficients(3,0,0.0001,0);
-        FollowerConstants.useSecondaryHeadingPID = true;
+        FollowerConstants.useSecondaryHeadingPID = false;
         FollowerConstants.secondaryHeadingPIDFCoefficients.setCoefficients(2,0,0.1,0);
 
-        FollowerConstants.drivePIDFCoefficients.setCoefficients(0.035,0,0.0006,0.3,0);
+        FollowerConstants.drivePIDFCoefficients.setCoefficients(0.082,0,0.0015,0.2,0);
         FollowerConstants.useSecondaryDrivePID = false;
         FollowerConstants.secondaryDrivePIDFCoefficients.setCoefficients(0.1,0,0,0.6,0); // Not being used, @see useSecondaryDrivePID
 
