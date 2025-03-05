@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.config.Subsystems.Outtake.OuttakeConstants
 public class PositionalPivotOuttake {
     private Servo Pivot0;
     private Servo Pivot1;
-
+    double offset = 0;
     public PositionalPivotOuttake(HardwareMap hardwareMap){
         Pivot0 = hardwareMap.get(Servo.class, OuttakeConstants.HMPivotArm0);
         Pivot1 = hardwareMap.get(Servo.class, OuttakeConstants.HMPivotArm1);
@@ -37,8 +37,11 @@ public class PositionalPivotOuttake {
 
     }
     public void PivotToSpecimen(){
-        PivotToPosition(OuttakeConstants.SpecimenPivotArm);
+        PivotToPosition(OuttakeConstants.SpecimenPivotArm+offset);
 
+    }
+    public void SetOffset(double set){
+        offset = set;
     }
     public void PivotToWallIntake(){
         PivotToPosition(OuttakeConstants.IntakeWallPivotArm);

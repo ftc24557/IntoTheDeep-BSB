@@ -36,6 +36,8 @@ public class LiftOuttake {
         MotorLift0.setPower(Power);
         MotorLift1.setPower(Power);
     }
+    public void LiftToScore(){SetToSetPoint(OuttakeConstants.SetPointScoreLift);
+    }
     public void LiftToChamber(){
         SetToSetPoint(OuttakeConstants.SetPointOuttakeChamberLift);
     }

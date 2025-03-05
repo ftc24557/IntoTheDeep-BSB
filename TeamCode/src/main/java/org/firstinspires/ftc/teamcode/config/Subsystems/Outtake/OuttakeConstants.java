@@ -18,12 +18,12 @@ public class OuttakeConstants {
     public static String HMPivotArm1 = "arm1";
     public static int ReversedServo = 1;
     //Positional
-    public static double ScoreSpecPivotArm = 0.3;
+    public static double ScoreSpecPivotArm = 0.1;
     public static double BasketPivotArm = 0.75;
     public static double IntakeTransferPivotArm = 0.0;
     public static double SpecimenPivotArm = 0.37;
     public static double IntakeWallPivotArm = 1;
-    public static double AutonPivotArm = 0.6;
+    public static double AutonPivotArm = 0.7;
 
     //PIDF
     public static double PivotkP = 0;
@@ -46,6 +46,7 @@ public class OuttakeConstants {
     public static int SetPointOuttakeBasketLift = 3000;
     public static int SetPointTransferLift = 0;
         public static int SetPointStartLift = 1100;
+        public static int SetPointScoreLift = 350;
     public static int SetPointEndLift = 0;
     public static double LiftkP = 0.01;
     public static double LiftkI = 0;

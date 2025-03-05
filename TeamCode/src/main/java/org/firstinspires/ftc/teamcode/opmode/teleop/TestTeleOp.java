@@ -31,6 +31,7 @@ public class TestTeleOp extends LinearOpMode {
         BASKET,
         SPECIMEN
     }
+    double offset = 0;
 
     @Override
     public void runOpMode(){
@@ -55,7 +56,7 @@ public class TestTeleOp extends LinearOpMode {
         Intake intake = new Intake(hardwareMap, sliderIntake, clawIntake, pivotIntake, Intake.state.TRANSFER_CLOSE, ColorRange.BLUE);
         double intakeExtension = 0;
         double intakeRotAngle = 270/2;
-
+        double maxExtension = 0.25;
 
         //gamepads
         GamepadEx gamepadEx1 = new GamepadEx(gamepad1);
@@ -76,7 +77,7 @@ public class TestTeleOp extends LinearOpMode {
 
 
         while (!isStopRequested()){
-
+        led.TurnOnColor(FeedBackLed.Color.PURPLE);
 
             gamepadEx1.readButtons();
             gamepadEx2.readButtons();
@@ -90,11 +91,11 @@ public class TestTeleOp extends LinearOpMode {
             if (gamepadEx1.wasJustPressed(GamepadKeys.Button.X)){
                 transferMeshing.Transfer();
             }*/
-            drive.Loop(gamepad1.left_stick_x, -gamepad1.left_stick_y, -gamepad1.right_stick_x);
+            drive.Loop(gamepad1.left_stick_x, -gamepad1.left_stick_y, -gamepad1.right_stick_x*.7);
             if (gamepadEx1.wasJustPressed(GamepadKeys.Button.START)){
                 drive.ResetOdom();
             }
-            feedBack.Loop();
+            //feedBack.Loop();
             outtakeModeToggle.readValue();
             outtakeToggle.readValue();
             outtakeBasketToggle.readValue();
@@ -135,8 +136,8 @@ public class TestTeleOp extends LinearOpMode {
             if (intakeExtension<0) {
                 intakeExtension = 0.1;
             }
-            if (intakeExtension>0.4){
-                intakeExtension = 0.4;
+            if (intakeExtension>maxExtension){
+                intakeExtension = maxExtension;
             }
             intakeExtension-=gamepad2.left_stick_y*0.02;
             sliderIntake.SetExtension(intakeExtension);
@@ -147,7 +148,7 @@ public class TestTeleOp extends LinearOpMode {
                 intakeRotAngle+= 270/3;
             }
             if (gamepadEx2.wasJustPressed(GamepadKeys.Button.DPAD_UP)){
-                intakeExtension = 0.4;
+                intakeExtension = maxExtension;
                 intake.SetState(Intake.state.SEARCH);
             }
             clawIntake.SetRotAngle(intakeRotAngle);
@@ -156,6 +157,14 @@ public class TestTeleOp extends LinearOpMode {
                 outtake.SetState(OuttakePositional.state.START_CLIMB);
             } else if (gamepadEx1.wasJustPressed(GamepadKeys.Button.DPAD_DOWN)){
                 outtake.SetState(OuttakePositional.state.END_CLIMB);
+            }
+            if (gamepadEx2.wasJustPressed(GamepadKeys.Button.B)){
+                intakeExtension = 0.25;
+                intake.SetState(Intake.state.SEARCH_CLOSE);
+                Alarm alarmThrow = new Alarm(400, ()->{
+                    intake.SetState(Intake.state.SEARCH);
+                });
+                alarmThrow.Run();
             }
 
             intake.Loop();

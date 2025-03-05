@@ -53,12 +53,13 @@ public class Auto5plus0 extends OpMode {
     Pose endPush1 = new Pose(25, 30, Math.toRadians(0));
     Pose startPush2 = new Pose(60, 19, Math.toRadians(0));
     Pose endPush2 = new Pose(25, 19, Math.toRadians(0));
-    Pose startPush3 = new Pose(60,13, Math.toRadians(90));
-    Pose endPush3 = new Pose(25, 13, Math.toRadians(90));
-    Pose pickUpPose = new Pose(10, 35, 0);
-    Pose scoringPose2 = new Pose(36.95, 76, 0);
+    Pose startPush3 = new Pose(60,15.5, Math.toRadians(90));
+    Pose endPush3 = new Pose(25, 15.5, Math.toRadians(90));
+    Pose pickUpPose = new Pose(9.25, 35, 0);
+    Pose pickupPose4 = new Pose(8.25, 35, 0);
+    Pose scoringPose2 = new Pose(36.95, 75, 0);
     Pose scoringPose3 = new Pose(36.95, 74, 0);
-    Pose scoringPose4 = new Pose(36.95, 70, 0);
+    Pose scoringPose4 = new Pose(36.95, 73, 0);
 
     private Path scorePreload, park;
     private PathChain   push3ToPickUp1, score2, score2ToPickUp2, score3, score3ToPickUp3, score4;
@@ -77,10 +78,14 @@ public class Auto5plus0 extends OpMode {
         preloadToPush = new Path(new BezierCurve(
                         new Point(scoringPose1),
                         new Point(20, 68.759, Point.CARTESIAN),
-                        new Point(10, 35, Point.CARTESIAN),
+                        new Point(22, 35, Point.CARTESIAN),
                         new Point(startPush1)
                 ));
                 preloadToPush.setLinearHeadingInterpolation(scoringPose1.getHeading(), startPush1.getHeading());
+                preloadToPush
+                        .setZeroPowerAccelerationMultiplier(0.1);
+                preloadToPush
+                        .setPathEndVelocityConstraint(0.1);
 
         push1 = new Path(new BezierCurve(
                         new Point(startPush1),
@@ -132,7 +137,7 @@ public class Auto5plus0 extends OpMode {
                 .build();
         score2 =follower.pathBuilder().addPath(new BezierCurve(
                         new Point(pickUpPose),
-                        new Point(20, 50),
+                        new Point(10, 50),
                         new Point(scoringPose2)
                 )).setLinearHeadingInterpolation(pickUpPose.getHeading(), scoringPose2.getHeading())
                 .build();
@@ -153,7 +158,7 @@ public class Auto5plus0 extends OpMode {
         score3ToPickUp3 = follower.pathBuilder().addPath(new BezierCurve(
                         new Point(scoringPose3),
                         new Point(16,27),
-                        new Point(pickUpPose)
+                        new Point(pickupPose4)
 
                 ))
                 .setZeroPowerAccelerationMultiplier(0.1)
@@ -161,8 +166,8 @@ public class Auto5plus0 extends OpMode {
                 .setPathEndVelocityConstraint(0.5)
                 .setLinearHeadingInterpolation(scoringPose3.getHeading(), pickUpPose.getHeading()).build();
         score4 = follower.pathBuilder().addPath(new BezierCurve(
-                        new Point(pickUpPose),
-                        new Point(20, 50),
+                        new Point(pickupPose4),
+                        new Point(10, 70),
                         new Point(scoringPose4)
                 )).setLinearHeadingInterpolation(0,0)
                 .build();
@@ -281,7 +286,6 @@ public class Auto5plus0 extends OpMode {
         outtake.SetState(OuttakePositional.state.OUTTAKE_CHAMBER);
         opmodeTimer = new Timer();
         inDelay = true;
-        intake.SetState(Intake.state.TRANSFER_CLOSE);
         Alarm alarmStart = new Alarm(500, ()->{inDelay=false;});
         alarmStart.Run();
     }
@@ -291,6 +295,7 @@ public class Auto5plus0 extends OpMode {
         led.TurnOnColor(FeedBackLed.Color.PURPLE);
         //Heitor safadão
 
+        intake.SetState(Intake.state.TRANSFER_CLOSE);
         telemetry = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
         pathTimer = new Timer();
 
