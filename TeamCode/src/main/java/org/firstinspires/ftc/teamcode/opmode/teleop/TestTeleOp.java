@@ -77,8 +77,15 @@ public class TestTeleOp extends LinearOpMode {
 
 
         while (!isStopRequested()){
-        led.TurnOnColor(FeedBackLed.Color.PURPLE);
-
+            switch (outtake.getCurrentState()){
+                case INTAKE_WALL:
+                    feedBack.SetMode(FeedBack.Mode.COLOR);
+                    break;
+                case OUTTAKE_CHAMBER:
+                    feedBack.SetMode(FeedBack.Mode.IDLE);
+                    break;
+            }
+            feedBack.Loop();
             gamepadEx1.readButtons();
             gamepadEx2.readButtons();
 
@@ -99,19 +106,17 @@ public class TestTeleOp extends LinearOpMode {
             outtakeModeToggle.readValue();
             outtakeToggle.readValue();
             outtakeBasketToggle.readValue();
-            if (!Climbing) {
-                if (outtakeToggle.stateJustChanged()) {
+
                         if (outtakeToggle.getState()) {
                             intake.SetState(Intake.state.SEARCH);
                             outtake.SetState(OuttakePositional.state.OUTTAKE_CHAMBER);
+                            feedBack.SetMode(FeedBack.Mode.IDLE);
                         } else {
+                            feedBack.SetMode(FeedBack.Mode.COLOR);
                             outtake.SetState(OuttakePositional.state.INTAKE_WALL);
                         }
                 }
-                feedBack.SetMode(FeedBack.Mode.COLOR);
-            } else {
-                feedBack.SetMode(FeedBack.Mode.IDLE);
-            }
+
 
 
 
@@ -175,4 +180,4 @@ public class TestTeleOp extends LinearOpMode {
         }
 
     }
-}
+

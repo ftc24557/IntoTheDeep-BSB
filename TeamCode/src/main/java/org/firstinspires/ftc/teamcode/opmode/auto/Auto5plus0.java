@@ -55,11 +55,11 @@ public class Auto5plus0 extends OpMode {
     Pose endPush2 = new Pose(25, 19, Math.toRadians(0));
     Pose startPush3 = new Pose(60,15.5, Math.toRadians(90));
     Pose endPush3 = new Pose(25, 15.5, Math.toRadians(90));
-    Pose pickUpPose = new Pose(9.25, 35, 0);
-    Pose pickupPose4 = new Pose(8.25, 35, 0);
-    Pose scoringPose2 = new Pose(36.95, 75, 0);
-    Pose scoringPose3 = new Pose(36.95, 74, 0);
-    Pose scoringPose4 = new Pose(36.95, 73, 0);
+    Pose pickUpPose = new Pose(9.5, 35, 0);
+    Pose pickupPose4 = new Pose(9.5, 35, 0);
+    Pose scoringPose2 = new Pose(37, 79, 0);
+    Pose scoringPose3 = new Pose(37, 75, 0);
+    Pose scoringPose4 = new Pose(37, 74, 0);
 
     private Path scorePreload, park;
     private PathChain   push3ToPickUp1, score2, score2ToPickUp2, score3, score3ToPickUp3, score4;
@@ -295,7 +295,6 @@ public class Auto5plus0 extends OpMode {
         led.TurnOnColor(FeedBackLed.Color.PURPLE);
         //Heitor safadão
 
-        intake.SetState(Intake.state.TRANSFER_CLOSE);
         telemetry = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
         pathTimer = new Timer();
 
@@ -314,7 +313,7 @@ public class Auto5plus0 extends OpMode {
         LiftOuttake lift = new LiftOuttake(hardwareMap);
         outtake = new OuttakePositional(lift, claw, pivot, OuttakePositional.state.INTAKE_WALL);
         intake = new Intake(hardwareMap, sliderIntake, clawIntake, pivotIntake, Intake.state.TRANSFER_CLOSE, ColorRange.RED);
-        intake.SetState(Intake.state.AUTON);
+        intake.SetState(Intake.state.TRANSFER_CLOSE);
         outtake.SetState(OuttakePositional.state.AUTON);
     }
 
@@ -326,6 +325,7 @@ public class Auto5plus0 extends OpMode {
         }
         intake.Loop();
         outtake.Loop();
+
         telemetry.addData("state: ", pathState);
 
         telemetry.addData("x: ", follower.getPose().getX());
