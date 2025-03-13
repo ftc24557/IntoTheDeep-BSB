@@ -18,7 +18,9 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 
 import org.firstinspires.ftc.teamcode.config.Alarm;
+import org.firstinspires.ftc.teamcode.config.Subsystems.Feedback.FeedBack;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Feedback.FeedBackLed;
+import org.firstinspires.ftc.teamcode.config.Subsystems.Feedback.FeedBackSensor;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Intake.ClawIntake;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Intake.Intake;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Intake.PivotIntake;
@@ -51,10 +53,10 @@ public class Auto5plus0 extends OpMode {
     Pose scoringPose1 = new Pose(37, 72, 0);
     Pose startPush1 = new Pose(60, 40, Math.toRadians(0));
     Pose endPush1 = new Pose(25, 30, Math.toRadians(0));
-    Pose startPush2 = new Pose(60, 19, Math.toRadians(0));
-    Pose endPush2 = new Pose(25, 19, Math.toRadians(0));
-    Pose startPush3 = new Pose(60,15.5, Math.toRadians(90));
-    Pose endPush3 = new Pose(25, 15.5, Math.toRadians(90));
+    Pose startPush2 = new Pose(60, 20, Math.toRadians(0));
+    Pose endPush2 = new Pose(25, 20, Math.toRadians(0));
+    Pose startPush3 = new Pose(60,16.3, Math.toRadians(90));
+    Pose endPush3 = new Pose(25, 16.3, Math.toRadians(90));
     Pose pickUpPose = new Pose(9.5, 35, 0);
     Pose pickupPose4 = new Pose(9.5, 35, 0);
     Pose scoringPose2 = new Pose(37, 79, 0);
@@ -68,6 +70,10 @@ public class Auto5plus0 extends OpMode {
     private Timer pathTimer, actionTimer, opmodeTimer;
     private int pathState;
     private boolean inDelay = false;
+
+    FeedBackLed led;
+    FeedBackSensor sensor;
+    FeedBack feedBack;
 
     private OuttakePositional outtake;
     private Intake intake;
@@ -291,9 +297,11 @@ public class Auto5plus0 extends OpMode {
     }
     @Override
     public void init(){
-        FeedBackLed led = new FeedBackLed(hardwareMap);
-        led.TurnOnColor(FeedBackLed.Color.PURPLE);
-        //Heitor safadão
+        led = new FeedBackLed(hardwareMap);
+        sensor = new FeedBackSensor(hardwareMap);
+        feedBack = new FeedBack(led, sensor);
+
+
 
         telemetry = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
         pathTimer = new Timer();
@@ -325,7 +333,15 @@ public class Auto5plus0 extends OpMode {
         }
         intake.Loop();
         outtake.Loop();
-
+        switch (outtake.getCurrentState()){
+            case INTAKE_WALL:
+                feedBack.SetMode(FeedBack.Mode.COLOR);
+                break;
+            case OUTTAKE_CHAMBER:
+                feedBack.SetMode(FeedBack.Mode.IDLE);
+                break;
+        }
+        feedBack.Loop();
         telemetry.addData("state: ", pathState);
 
         telemetry.addData("x: ", follower.getPose().getX());

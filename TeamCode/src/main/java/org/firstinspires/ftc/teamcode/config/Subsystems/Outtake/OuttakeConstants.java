@@ -19,7 +19,7 @@ public class OuttakeConstants {
     public static int ReversedServo = 1;
     //Positional
     public static double ScoreSpecPivotArm = 0.1;
-    public static double BasketPivotArm = 0.75;
+    public static double BasketPivotArm = 1;
     public static double IntakeTransferPivotArm = 0.0;
     public static double SpecimenPivotArm = 0.37;
     public static double IntakeWallPivotArm = 1;
@@ -45,12 +45,12 @@ public class OuttakeConstants {
     public static int SetPointOuttakeChamberLift = 745;
     public static int SetPointOuttakeBasketLift = 3000;
     public static int SetPointTransferLift = 0;
-        public static int SetPointStartLift = 1100;
+        public static int SetPointStartLift = 3100;
         public static int SetPointScoreLift = 350;
     public static int SetPointEndLift = 0;
-    public static double LiftkP = 0.01;
+    public static double LiftkP = 0.008;
     public static double LiftkI = 0;
-    public static double LiftkD = 0;
+    public static double LiftkD = 0.00005;
 
 
 

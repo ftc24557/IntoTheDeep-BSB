@@ -9,6 +9,7 @@ public class LiftOuttake {
     DcMotor MotorLift0;
     DcMotor MotorLift1;
     int CurrentSetPoint = 0;
+    int offset = 0;
     PIDController pidController = new PIDController(OuttakeConstants.LiftkP, OuttakeConstants.LiftkI, OuttakeConstants.LiftkD);
     public LiftOuttake(HardwareMap hardwareMap){
         MotorLift0 = hardwareMap.get(DcMotor.class, OuttakeConstants.HMMotorLift0);
@@ -25,6 +26,12 @@ public class LiftOuttake {
         MotorLift0.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         MotorLift1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
+    public void Reset(){
+        MotorLift0.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        MotorLift1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        MotorLift0.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        MotorLift1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
     private int[] GetMotorPositions(){
         int[] arr = {MotorLift0.getCurrentPosition(), MotorLift1.getCurrentPosition()};
         return arr;
@@ -38,6 +45,7 @@ public class LiftOuttake {
     }
     public void LiftToScore(){SetToSetPoint(OuttakeConstants.SetPointScoreLift);
     }
+    public void SetOffSet(int set){offset = set;};
     public void LiftToChamber(){
         SetToSetPoint(OuttakeConstants.SetPointOuttakeChamberLift);
     }
@@ -53,7 +61,7 @@ public class LiftOuttake {
     public void LiftToStartClimb(){SetToSetPoint(OuttakeConstants.SetPointStartLift);}
     public void LiftToEndClimb(){SetToSetPoint(OuttakeConstants.SetPointEndLift);}
     public void MainLoop(){
-        double Power = pidController.calculate(GetMotorPositions()[0], CurrentSetPoint); //Perguntar pro lauro se eu faço 1 controller pra cada ou nao
+        double Power = pidController.calculate(GetMotorPositions()[0], CurrentSetPoint+offset); //Perguntar pro lauro se eu faço 1 controller pra cada ou nao
         SetPowers(Power);
     }
 
