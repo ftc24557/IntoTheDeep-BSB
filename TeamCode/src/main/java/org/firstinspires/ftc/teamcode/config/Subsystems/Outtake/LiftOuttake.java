@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.config.Alarm;
+
 public class LiftOuttake {
     DcMotor MotorLift0;
     DcMotor MotorLift1;
@@ -59,7 +61,11 @@ public class LiftOuttake {
         SetToSetPoint(OuttakeConstants.SetPointIntakeLift);
     }
     public void LiftToStartClimb(){SetToSetPoint(OuttakeConstants.SetPointStartLift);}
-    public void LiftToEndClimb(){SetToSetPoint(OuttakeConstants.SetPointEndLift);}
+    public void LiftToEndClimb(){
+        Alarm alarmHook = new Alarm(500, ()->{
+            SetToSetPoint(OuttakeConstants.SetPointEndLift);});
+        alarmHook.Run();
+    }
     public void MainLoop(){
         double Power = pidController.calculate(GetMotorPositions()[0], CurrentSetPoint+offset); //Perguntar pro lauro se eu faço 1 controller pra cada ou nao
         SetPowers(Power);

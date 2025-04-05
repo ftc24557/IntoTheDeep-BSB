@@ -4,8 +4,9 @@ import org.firstinspires.ftc.teamcode.config.Alarm;
 
 public class OuttakePositional {
     public ClawOuttake claw;
-    PositionalPivotOuttake pivot;
+    PIDFPivotOuttake pivot;
     LiftOuttake liftOuttake;
+    Hook hook;
     Boolean StopRequested = false;
     public static Runnable Loop;
     public enum state {
@@ -14,18 +15,21 @@ public class OuttakePositional {
         OUTTAKE_BASKET,
         INIT_POS,
         TRANSFER,
+        TRANSFER_CLOSE,
         START_CLIMB,
         END_CLIMB,
+        INTAKE_WALL_CLOSED,
         AUTON
     }
     private state currentState;
     public void Stop(){
         StopRequested = true;
     }
-    public OuttakePositional(LiftOuttake liftOuttake, ClawOuttake clawOuttake, PositionalPivotOuttake pivotOuttake, state StartingPos){
+    public OuttakePositional(LiftOuttake liftOuttake, ClawOuttake clawOuttake, PIDFPivotOuttake pivotOuttake, Hook hookClimber, state StartingPos){
         claw = clawOuttake;
         pivot = pivotOuttake;
         this.liftOuttake = liftOuttake;
+        hook = hookClimber;
         Loop = ()->{
             while (!StopRequested){
                 this.liftOuttake.MainLoop();
@@ -39,6 +43,7 @@ public class OuttakePositional {
     }
     public void Loop(){
         liftOuttake.MainLoop();
+        pivot.Loop();
     }
     public void Start(){
         Loop.run();
@@ -51,6 +56,19 @@ public class OuttakePositional {
                         claw.RotToIntake();
                         liftOuttake.LiftToIntake();
                         pivot.PivotToWallIntake();
+
+
+                break;
+            case TRANSFER_CLOSE:
+                pivot.PivotToTransfer();
+                liftOuttake.LiftToTransfer();
+                claw.CloseClaw();
+                claw.RotToIntake();
+                break;
+            case INTAKE_WALL_CLOSED:
+                claw.CloseClaw();
+                liftOuttake.LiftToIntake();
+                pivot.PivotToWallIntake();
 
 
                 break;
@@ -93,15 +111,13 @@ public class OuttakePositional {
             case START_CLIMB:
                 pivot.PivotToWallIntake();
                 liftOuttake.LiftToStartClimb();
+                hook.OpenHook();
                 break;
             case END_CLIMB:
-
+                hook.CloseHook();
                 liftOuttake.LiftToEndClimb();
                 break;
-            case AUTON:
-                pivot.PivotToAuton();
-                claw.CloseClaw();
-                break;
+
         }
         currentState = state;
     }

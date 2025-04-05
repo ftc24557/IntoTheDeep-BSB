@@ -72,6 +72,10 @@ public class Intake {
                 pivot.PivotToCatch();
                 Alarm alarmCatch = new Alarm(200, ()->{
                     claw.CloseClaw();
+                    Alarm alarmReturn = new Alarm(500, ()->{
+                        SetState(Intake.state.SEARCH_CLOSE);
+                    });
+                    alarmReturn.Run();
                 });
                 alarmCatch.Run();
                 break;
@@ -80,11 +84,17 @@ public class Intake {
                 claw.OpenClaw();
                 break;
             case TRANSFER_CLOSE:
+                slider.SetExtension(0.22);
                 pivot.PivotToTransfer();
                 claw.CloseClaw();
+                claw.AngleToTransfer();
+
                 break;
             case TRANSFER_OPEN:
+                slider.SetExtension(0.18);
                 pivot.PivotToTransfer();
+                claw.AngleToTransfer();
+
                 claw.OpenClaw();
                 break;
             case SEARCH_CLOSE:

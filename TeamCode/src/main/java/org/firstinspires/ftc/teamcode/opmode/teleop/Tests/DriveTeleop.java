@@ -15,8 +15,10 @@ import org.firstinspires.ftc.teamcode.config.Alarm;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Drive.MecanumDriveTeleOp;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Drive.MecanumPedroTeleop;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Outtake.ClawOuttake;
+import org.firstinspires.ftc.teamcode.config.Subsystems.Outtake.Hook;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Outtake.LiftOuttake;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Outtake.OuttakePositional;
+import org.firstinspires.ftc.teamcode.config.Subsystems.Outtake.PIDFPivotOuttake;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Outtake.PositionalPivotOuttake;
 
 @TeleOp
@@ -28,8 +30,9 @@ public class DriveTeleop extends LinearOpMode {
 
         LiftOuttake lift = new LiftOuttake(hardwareMap);
         ClawOuttake claw = new ClawOuttake(hardwareMap);
-        PositionalPivotOuttake pivot = new PositionalPivotOuttake(hardwareMap);
-        OuttakePositional outtake = new OuttakePositional(lift, claw, pivot, OuttakePositional.state.INTAKE_WALL);
+        PIDFPivotOuttake pivot = new PIDFPivotOuttake(hardwareMap);
+        Hook hook = new Hook(hardwareMap);
+        OuttakePositional outtake = new OuttakePositional(lift, claw, pivot,hook, OuttakePositional.state.INTAKE_WALL);
         Alarm alarmScore = new Alarm(300, ()->{
             drive.ScoreSpecimen(new Alarm(100, ()->{}));
         });

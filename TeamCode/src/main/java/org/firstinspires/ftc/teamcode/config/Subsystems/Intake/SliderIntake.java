@@ -10,7 +10,7 @@ public class SliderIntake {
 
     private double extension = 0;
     public SliderIntake(HardwareMap hardwareMap){
-        servoEx0 = hardwareMap.get(Servo.class, IntakeConstants.HMSLider0);
+        servoEx0 = hardwareMap.get(Servo.class, IntakeConstants.HMSlider0);
         servoEx1 = hardwareMap.get(Servo.class, IntakeConstants.HMSlider1);
     }
 
@@ -23,9 +23,12 @@ public class SliderIntake {
             case 1:
 
                 servoEx1.setPosition(1-pos);
-                servoEx0.setPosition(pos);
+                servoEx0.setPosition(0.5+pos);
                 break;
         }
+    }
+    public double GetExtension(){
+        return extension;
     }
 
     public void Loop(){
@@ -33,6 +36,11 @@ public class SliderIntake {
     }
 
     public void SetExtension(double ex){
+        if (extension>0.5){
+            ex = 0.5;
+        } else if (extension<0){
+            ex =0.0;
+        }
         extension = ex;
     }
 }

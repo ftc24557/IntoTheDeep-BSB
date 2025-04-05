@@ -17,7 +17,7 @@ public class FeedBackSensor {
         color = hardwareMap.get(RevColorSensorV3.class, FeedBackConstants.HMSensor);
     }
     public SampleColor GetCurrentSampleColor(){
-       if (color.getDistance(DistanceUnit.CM)<3.5) {
+       if (color.getDistance(DistanceUnit.CM)<6) {
            if (color.red() > color.green() && color.red() > color.blue()) {
                return SampleColor.RED;
            } else if (color.blue() > color.red() && color.blue() > color.green()) {

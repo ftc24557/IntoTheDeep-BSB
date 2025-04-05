@@ -18,7 +18,7 @@ public class MecanumPedroTeleop {
 
     private Follower follower;
 
-    private final Pose startPose = new Pose(0,0,0);
+    private final Pose startPose = new Pose(0,0,Math.toRadians(-90));
 
     Pose pickUpPose = new Pose(12, 35, 0);
 
@@ -59,7 +59,7 @@ public class MecanumPedroTeleop {
             }
         } else {
 
-            follower.setTeleOpMovementVectors(-y, -x, -rx, false);
+            follower.setTeleOpMovementVectors(y, x, rx, false);
             follower.update();
         }
     }

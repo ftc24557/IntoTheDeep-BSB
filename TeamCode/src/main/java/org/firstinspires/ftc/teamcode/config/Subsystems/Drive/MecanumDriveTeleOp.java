@@ -27,18 +27,24 @@ public class MecanumDriveTeleOp {
     DcMotor rightRear;
     DcMotor leftRear;
     GoBildaPinpointDriver odom;
+    IMU imu;
+    public double botHeading;
     public MecanumDriveTeleOp(HardwareMap hardwareMap){
-        rightFront = hardwareMap.get(DcMotor.class, "rightFront");
         leftFront = hardwareMap.get(DcMotor.class, "leftFront");
+        rightFront = hardwareMap.get(DcMotor.class, "rightFront");
         rightRear = hardwareMap.get(DcMotor.class, "rightRear");
         leftRear = hardwareMap.get(DcMotor.class, "leftRear");
-        leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
-        leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
-        odom = hardwareMap.get(GoBildaPinpointDriver.class,"odom");
-
-        odom.resetPosAndIMU();
+        imu = hardwareMap.get(IMU.class, "imu");
+        // Adjust the orientation parameters to match your robot
+        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
+                RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
+                RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD));
+        // Without this, the REV Hub's orientation is assumed to be logo up / USB forward
+        imu.initialize(parameters);
 
 /*        imu = hardwareMap.get(IMU.class, "imu");
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
@@ -47,11 +53,10 @@ public class MecanumDriveTeleOp {
         imu.initialize(parameters);
 */    }
     public void ResetOdom(){
-        odom.resetPosAndIMU();
+        imu.resetYaw();
     }
     public void Loop(double x, double y, double rx){
-        odom.update();
-        double botHeading = odom.getHeading();
+        botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);;
         double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
         double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
         rotX = rotX * 1.1;

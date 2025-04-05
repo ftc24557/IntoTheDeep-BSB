@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.config.Subsystems.Outtake;
 
 public class OuttakeConstants {
     //Global
-    public static int DelayInToOut = 400;
+    public static int DelayInToOut = 550;
     //Outtake Claw Subsystem
     public static String HMClaw = "servoClaw";
     public static double ClosedClaw = 1;
@@ -16,24 +16,24 @@ public class OuttakeConstants {
     //Outtake Pivot Arm
     public static String HMPivotArm0 = "arm0";
     public static String HMPivotArm1 = "arm1";
-    public static int ReversedServo = 1;
+    public static int ReversedServo = 0;
     //Positional
     public static double ScoreSpecPivotArm = 0.1;
-    public static double BasketPivotArm = 1;
+    public static double BasketPivotArm = 0.6;
     public static double IntakeTransferPivotArm = 0.0;
-    public static double SpecimenPivotArm = 0.37;
+    public static double SpecimenPivotArm = 0.4;
     public static double IntakeWallPivotArm = 1;
     public static double AutonPivotArm = 0.7;
 
     //PIDF
-    public static double PivotkP = 0;
+    public static double PivotkP = 0.0007;
     public static double PivotkI = 0;
-    public static double PivotkD = 0;
+    public static double PivotkD = 0.00001;
     public static double PivotkF = 0;
-    public static String HMEncoderPivotArm = "";
-    public static double BasketSPPivotArm = 0;
-    public static double IntakeTransferSPPivotArm = 0;
-    public static double SpecimenSPPivotArm = 0;
+    public static String HMEncoderPivotArm = "encoderPivot";
+    public static double BasketSPPivotArm = 1196;
+    public static double IntakeTransferSPPivotArm = 5053;
+    public static double SpecimenSPPivotArm = 2830;
     public static double IntakeWallSPPivotArm = 0;
 
 
@@ -41,17 +41,21 @@ public class OuttakeConstants {
     public static String HMMotorLift0 = "motorLift0";
     public static String HMMotorLift1 = "motorLift1";
     public static int ReversedLiftMotor = 1;
-    public static int SetPointIntakeLift = 15;
-    public static int SetPointOuttakeChamberLift = 745;
-    public static int SetPointOuttakeBasketLift = 3000;
-    public static int SetPointTransferLift = 0;
-        public static int SetPointStartLift = 3100;
-        public static int SetPointScoreLift = 350;
-    public static int SetPointEndLift = 0;
+    public static int SetPointIntakeLift = 20;
+    public static int SetPointOuttakeChamberLift = 530;
+    public static int SetPointOuttakeBasketLift = 2800;
+    public static int SetPointTransferLift = 1130;
+        public static int SetPointStartLift = 2900;
+        public static int SetPointScoreLift = 2300;
+    public static int SetPointEndLift = 800;
     public static double LiftkP = 0.008;
     public static double LiftkI = 0;
     public static double LiftkD = 0.00005;
 
-
+    public static String HMHook0 = "hook0";
+    public static String HMHook1 = "hook1";
+    public static int ReversedHook = 1;
+    public static double SetPointOpenHook = 0.5;
+    public static double SetPointClosedHook = 1;
 
 }

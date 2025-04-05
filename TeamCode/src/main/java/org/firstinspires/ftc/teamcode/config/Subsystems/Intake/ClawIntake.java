@@ -23,13 +23,22 @@ public class ClawIntake {
         claw.setPosition(IntakeConstants.ClosedClaw);
     }
     public void SetRotAngle(double Angle){ //Set the claw rotation in a angle beetween 0 and 270 DEGREES
-        rot.setPosition(Angle/270);
+        if (Angle<0){
+            Angle = 0;
+        }
+        if (Angle>1){
+            Angle = 1;
+        }
+            rot.setPosition(Angle);
     }
     public void ResetRotAngle(){
-        SetRotAngle(270/2);
+        SetRotAngle(0.5);
+    }
+    public void AngleToTransfer(){
+        SetRotAngle(IntakeConstants.TransferRot);
     }
     public double GetRotAngleDegrees(){
-        return rot.getPosition()*270;
+        return rot.getPosition();
     }
 
 }

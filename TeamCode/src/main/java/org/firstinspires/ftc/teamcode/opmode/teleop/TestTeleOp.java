@@ -19,8 +19,10 @@ import org.firstinspires.ftc.teamcode.config.Subsystems.Intake.Intake;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Intake.PivotIntake;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Intake.SliderIntake;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Outtake.ClawOuttake;
+import org.firstinspires.ftc.teamcode.config.Subsystems.Outtake.Hook;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Outtake.LiftOuttake;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Outtake.OuttakePositional;
+import org.firstinspires.ftc.teamcode.config.Subsystems.Outtake.PIDFPivotOuttake;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Outtake.PositionalPivotOuttake;
 import org.firstinspires.ftc.vision.opencv.ColorRange;
 
@@ -45,10 +47,11 @@ public class TestTeleOp extends LinearOpMode {
 
 
         //outtake
+        Hook hook = new Hook(hardwareMap);
         LiftOuttake liftOuttake = new LiftOuttake(hardwareMap);
         ClawOuttake clawOuttake = new ClawOuttake(hardwareMap);
-        PositionalPivotOuttake positionalPivotOuttake = new PositionalPivotOuttake(hardwareMap);
-        OuttakePositional outtake = new OuttakePositional(liftOuttake, clawOuttake, positionalPivotOuttake, OuttakePositional.state.INTAKE_WALL);
+        PIDFPivotOuttake positionalPivotOuttake = new PIDFPivotOuttake(hardwareMap);
+        OuttakePositional outtake = new OuttakePositional(liftOuttake, clawOuttake, positionalPivotOuttake,hook, OuttakePositional.state.INTAKE_WALL);
         double offset = 0;
         //intake
         ClawIntake clawIntake = new ClawIntake(hardwareMap);
@@ -92,7 +95,7 @@ public class TestTeleOp extends LinearOpMode {
             if (gamepadEx1.wasJustPressed(GamepadKeys.Button.X)){
                 transferMeshing.Transfer();
             }*/
-            drive.Loop(gamepad1.left_stick_x, -gamepad1.left_stick_y, -gamepad1.right_stick_x * .7);
+            drive.Loop(gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x * .7);
             if (gamepadEx1.wasJustPressed(GamepadKeys.Button.START)) {
                 drive.ResetOdom();
             }
