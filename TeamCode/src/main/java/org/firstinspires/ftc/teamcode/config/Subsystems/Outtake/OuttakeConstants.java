@@ -8,11 +8,12 @@ public class OuttakeConstants {
     public static double ClosedClaw = 1;
     public static double OpenedClaw = 0.5;
 
+
     //Outtake Rot DOF
     public static String HMRot = "servoRot";
     public static double IntakeRot = 0;
     public static double OuttakeRot = 1;
-
+    public static double BasketRot = 0.5;
     //Outtake Pivot Arm
     public static String HMPivotArm0 = "arm0";
     public static String HMPivotArm1 = "arm1";
@@ -28,12 +29,12 @@ public class OuttakeConstants {
     //PIDF
     public static double PivotkP = 0.0007;
     public static double PivotkI = 0;
-    public static double PivotkD = 0.00001;
+    public static double PivotkD = 0.00002;
     public static double PivotkF = 0;
     public static String HMEncoderPivotArm = "encoderPivot";
-    public static double BasketSPPivotArm = 1196;
+    public static double BasketSPPivotArm = 1255;
     public static double IntakeTransferSPPivotArm = 5053;
-    public static double SpecimenSPPivotArm = 2830;
+    public static double SpecimenSPPivotArm = 2880;
     public static double IntakeWallSPPivotArm = 0;
 
 
@@ -43,7 +44,7 @@ public class OuttakeConstants {
     public static int ReversedLiftMotor = 1;
     public static int SetPointIntakeLift = 20;
     public static int SetPointOuttakeChamberLift = 530;
-    public static int SetPointOuttakeBasketLift = 2800;
+    public static int SetPointOuttakeBasketLift = 3100;
     public static int SetPointTransferLift = 1130;
         public static int SetPointStartLift = 2900;
         public static int SetPointScoreLift = 2300;

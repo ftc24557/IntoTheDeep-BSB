@@ -68,7 +68,6 @@ public class ChampsTeleOp extends LinearOpMode {
         GamepadEx gamepadEx2 = new GamepadEx(gamepad2);
         MecanumDriveTeleOp drive = new MecanumDriveTeleOp(hardwareMap);
 
-
         ToggleButtonReader mainButtonReader = new ToggleButtonReader(gamepadEx1, GamepadKeys.Button.RIGHT_BUMPER);
 
 
@@ -81,14 +80,14 @@ public class ChampsTeleOp extends LinearOpMode {
             mainButtonReader.readValue();
             drive.Loop(gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x * .7);
             if (gamepadEx1.wasJustPressed(GamepadKeys.Button.START)){
-
+                drive.ResetOdom();
             }
 
 
 
 
             if (gamepadEx2.wasJustPressed(GamepadKeys.Button.B)){
-                //outtake.SetState(OuttakePositional.state.TRANSFER);
+                intake.SetState(Intake.state.TRANSFER_CLOSE);
             }
             if (gamepadEx2.wasJustPressed(GamepadKeys.Button.X)){
                 intake.SetState(Intake.state.CATCH);
@@ -145,6 +144,19 @@ public class ChampsTeleOp extends LinearOpMode {
                         }
                     }
                     break;
+                case HIGH_BASKET:
+
+                    if (mainButtonReader.stateJustChanged()){
+                        if (mainButtonReader.getState()){
+                            outtake.SetState(OuttakePositional.state.TRANSFER);
+
+
+                        }else{
+                            outtake.SetState(OuttakePositional.state.OUTTAKE_BASKET);
+                            intake.SetState(Intake.state.TRANSFER_OPEN);
+                        }
+                    }
+                    break;
 
             }
 
@@ -153,6 +165,7 @@ public class ChampsTeleOp extends LinearOpMode {
                 mainButtonReader = new ToggleButtonReader(gamepadEx1, GamepadKeys.Button.RIGHT_BUMPER);
             } else if (gamepadEx2.wasJustPressed(GamepadKeys.Button.DPAD_LEFT)){
                 currentState = TeleOpState.HIGH_BASKET;
+                mainButtonReader = new ToggleButtonReader(gamepadEx1, GamepadKeys.Button.RIGHT_BUMPER);
             } else if (gamepadEx2.wasJustPressed(GamepadKeys.Button.DPAD_DOWN)){
                 currentState = TeleOpState.STORING;
             } else if (gamepadEx2.wasJustPressed(GamepadKeys.Button.DPAD_RIGHT)){

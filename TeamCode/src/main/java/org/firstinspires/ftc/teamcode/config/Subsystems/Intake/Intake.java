@@ -84,7 +84,9 @@ public class Intake {
                 claw.OpenClaw();
                 break;
             case TRANSFER_CLOSE:
-                slider.SetExtension(0.22);
+                Alarm alamExtension = new Alarm(700, ()->{
+                    slider.SetExtension(0.2);});
+                alamExtension.Run();
                 pivot.PivotToTransfer();
                 claw.CloseClaw();
                 claw.AngleToTransfer();
@@ -92,10 +94,12 @@ public class Intake {
                 break;
             case TRANSFER_OPEN:
                 slider.SetExtension(0.18);
-                pivot.PivotToTransfer();
-                claw.AngleToTransfer();
+                Alarm alarmToOpen = new Alarm(300, ()->{
+                    pivot.PivotToTransfer();
 
-                claw.OpenClaw();
+                    claw.OpenClaw();});
+                alarmToOpen.Run();
+
                 break;
             case SEARCH_CLOSE:
                 pivot.PivotToSearch();

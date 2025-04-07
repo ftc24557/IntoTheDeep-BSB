@@ -19,5 +19,7 @@ public class ClawOuttake {
     }
     public void RotToIntake(){rot.setPosition(OuttakeConstants.IntakeRot);}
     public void RotToOuttake(){rot.setPosition(OuttakeConstants.OuttakeRot);}
-
+    public void RotToBasket(){
+        rot.setPosition(OuttakeConstants.BasketRot);
+    }
 }

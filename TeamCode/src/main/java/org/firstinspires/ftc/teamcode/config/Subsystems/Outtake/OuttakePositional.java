@@ -51,7 +51,7 @@ public class OuttakePositional {
     public void SetState(state state){
         switch (state){
             case INTAKE_WALL:
-
+                currentState = state;
                         claw.OpenClaw();
                         claw.RotToIntake();
                         liftOuttake.LiftToIntake();
@@ -60,12 +60,14 @@ public class OuttakePositional {
 
                 break;
             case TRANSFER_CLOSE:
+                currentState = state;
                 pivot.PivotToTransfer();
                 liftOuttake.LiftToTransfer();
                 claw.CloseClaw();
                 claw.RotToIntake();
                 break;
             case INTAKE_WALL_CLOSED:
+                currentState = state;
                 claw.CloseClaw();
                 liftOuttake.LiftToIntake();
                 pivot.PivotToWallIntake();
@@ -74,9 +76,9 @@ public class OuttakePositional {
                 break;
             case OUTTAKE_CHAMBER:
                 claw.CloseClaw();
-
+                currentState = state; // <- mover para antes
                 Runnable SetToOuttakeChamber = ()->{
-                    if (currentState== OuttakePositional.state.OUTTAKE_CHAMBER){
+                    if (currentState == OuttakePositional.state.OUTTAKE_CHAMBER){
                         pivot.PivotToSpecimen();
                         claw.RotToOuttake();
                         liftOuttake.LiftToChamber();
@@ -87,33 +89,41 @@ public class OuttakePositional {
                 break;
             case OUTTAKE_BASKET:
                 claw.CloseClaw();
+                currentState = state;
                 Runnable SetToOuttakeBasket = ()->{
-                    claw.CloseClaw();
                     if (currentState == OuttakePositional.state.OUTTAKE_BASKET){
+                        claw.CloseClaw();
                         liftOuttake.LiftToHighBasket();
                         pivot.PivotToBasket();
-                        claw.RotToOuttake();
+                        claw.RotToBasket();
+
                     }
                 };
                 Alarm SetToOuttakeBasketAlarm = new Alarm(OuttakeConstants.DelayInToOut, SetToOuttakeBasket);
                 SetToOuttakeBasketAlarm.Run();
                 break;
             case INIT_POS:
+                currentState = state;
                 claw.CloseClaw();
                 pivot.PivotToWallIntake();
                 break;
             case TRANSFER:
-                pivot.PivotToTransfer();
-                liftOuttake.LiftToTransfer();
+
+                Alarm alarmBasketToTransfer = new Alarm(500, ()->{                pivot.PivotToTransfer();
+                    liftOuttake.LiftToTransfer();});
+                alarmBasketToTransfer.Run();
+                currentState = state;
+
                 claw.OpenClaw();
                 claw.RotToIntake();
                 break; //nao sei como fazer lol
             case START_CLIMB:
+                currentState = state;
                 pivot.PivotToWallIntake();
                 liftOuttake.LiftToStartClimb();
                 hook.OpenHook();
                 break;
-            case END_CLIMB:
+            case END_CLIMB:                currentState = state;
                 hook.CloseHook();
                 liftOuttake.LiftToEndClimb();
                 break;
