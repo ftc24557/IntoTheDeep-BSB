@@ -29,13 +29,14 @@ public class OuttakeConstants {
     //PIDF
     public static double PivotkP = 0.0007;
     public static double PivotkI = 0;
-    public static double PivotkD = 0.00002;
+    public static double PivotkD = 0.00001;
     public static double PivotkF = 0;
     public static String HMEncoderPivotArm = "encoderPivot";
-    public static double BasketSPPivotArm = 1255;
+    public static double BasketSPPivotArm = 1200;
     public static double IntakeTransferSPPivotArm = 5053;
-    public static double SpecimenSPPivotArm = 2880;
+    public static double SpecimenSPPivotArm = 2790;
     public static double IntakeWallSPPivotArm = 0;
+    public static double AutonSPPivotArm = 700;
 
 
     //Lift Subsystem
@@ -44,7 +45,7 @@ public class OuttakeConstants {
     public static int ReversedLiftMotor = 1;
     public static int SetPointIntakeLift = 20;
     public static int SetPointOuttakeChamberLift = 530;
-    public static int SetPointOuttakeBasketLift = 3100;
+    public static int SetPointOuttakeBasketLift = 3150;
     public static int SetPointTransferLift = 1130;
         public static int SetPointStartLift = 2900;
         public static int SetPointScoreLift = 2300;

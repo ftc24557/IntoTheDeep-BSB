@@ -19,7 +19,7 @@ public class IntakeTuning extends LinearOpMode {
         Servo claw;
         Servo rot;
 
-        pivot = hardwareMap.get(Servo.class, IntakeConstants.HMPivot);
+        pivot = hardwareMap.get(Servo.class,"pushArm");
         claw = hardwareMap.get(Servo.class, IntakeConstants.HMClaw);
         rot = hardwareMap.get(Servo.class, IntakeConstants.HMRot);
 

@@ -5,10 +5,15 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.gamepad.ToggleButtonReader;
+import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.config.Alarm;
+import org.firstinspires.ftc.teamcode.config.Subsystems.Distance.Distance;
+import org.firstinspires.ftc.teamcode.config.Subsystems.Distance.DistanceConstants;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Drive.MecanumDriveTeleOp;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Drive.MecanumPedroTeleop;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Feedback.FeedBack;
@@ -23,6 +28,7 @@ import org.firstinspires.ftc.teamcode.config.Subsystems.Outtake.Hook;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Outtake.LiftOuttake;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Outtake.OuttakePositional;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Outtake.PIDFPivotOuttake;
+import org.firstinspires.ftc.teamcode.config.Subsystems.PushArm;
 import org.firstinspires.ftc.vision.opencv.ColorRange;
 
 import java.util.Objects;
@@ -69,12 +75,12 @@ public class ChampsTeleOp extends LinearOpMode {
         MecanumDriveTeleOp drive = new MecanumDriveTeleOp(hardwareMap);
 
         ToggleButtonReader mainButtonReader = new ToggleButtonReader(gamepadEx1, GamepadKeys.Button.RIGHT_BUMPER);
-
-
+        PushArm pushArm = new PushArm(hardwareMap);
 
 
         waitForStart();
         while (!isStopRequested()){
+            pushArm.Deactivate();
             gamepadEx2.readButtons();
             gamepadEx1.readButtons();
             mainButtonReader.readValue();
@@ -121,8 +127,14 @@ public class ChampsTeleOp extends LinearOpMode {
                 clawIntake.SetRotAngle(clawIntake.GetRotAngleDegrees()+(gamepadEx2.wasJustPressed(GamepadKeys.Button.LEFT_BUMPER)?-0.2:0)+(gamepadEx2.wasJustPressed(GamepadKeys.Button.RIGHT_BUMPER)?0.2:0));
             }*/
 
-            sliderIntake.SetExtension(sliderIntake.GetExtension()+gamepadEx2.getLeftY()*0.018);
+            sliderIntake.SetExtension(sliderIntake.GetExtension()+gamepadEx2.getLeftY()*0.09);
             clawIntake.SetRotAngle(clawIntake.GetRotAngleDegrees()+(gamepadEx2.wasJustPressed(GamepadKeys.Button.LEFT_BUMPER)?-0.2:0)+(gamepadEx2.wasJustPressed(GamepadKeys.Button.RIGHT_BUMPER)?0.2:0));
+
+            if (gamepadEx2.wasJustPressed(GamepadKeys.Button.A)){
+                sliderIntake.SetExtension(0.5);
+                pushArm.Deactivate();
+            }
+
 
             switch (currentState){
                 case CLIMBING:
@@ -172,6 +184,8 @@ public class ChampsTeleOp extends LinearOpMode {
                 currentState = TeleOpState.SPECIMEN;
                 mainButtonReader = new ToggleButtonReader(gamepadEx1, GamepadKeys.Button.RIGHT_BUMPER);
             }
+
+
 
             outtake.Loop();
             telemetry.addData("Current State: ", currentState.toString());

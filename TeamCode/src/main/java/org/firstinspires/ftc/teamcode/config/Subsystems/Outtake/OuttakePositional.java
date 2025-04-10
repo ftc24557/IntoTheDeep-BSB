@@ -50,6 +50,10 @@ public class OuttakePositional {
     }
     public void SetState(state state){
         switch (state){
+            case AUTON:
+                claw.CloseClaw();
+                claw.RotToIntake();
+                pivot.PivotToAuton();
             case INTAKE_WALL:
                 currentState = state;
                         claw.OpenClaw();

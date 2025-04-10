@@ -53,4 +53,7 @@ public class PIDFPivotOuttake {
 
     }
 
+    public void PivotToAuton() {
+        setPoint = OuttakeConstants.AutonSPPivotArm;
+    }
 }

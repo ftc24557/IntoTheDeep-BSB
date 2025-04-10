@@ -23,7 +23,7 @@ public class SliderIntake {
             case 1:
 
                 servoEx1.setPosition(1-pos);
-                servoEx0.setPosition(0.5+pos);
+                servoEx0.setPosition(pos);
                 break;
         }
     }
