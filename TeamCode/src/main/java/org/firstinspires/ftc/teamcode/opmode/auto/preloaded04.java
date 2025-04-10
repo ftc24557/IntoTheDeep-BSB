@@ -18,7 +18,6 @@ import org.firstinspires.ftc.teamcode.config.Subsystems.Intake.SliderIntake;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Outtake.ClawOuttake;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Outtake.Hook;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Outtake.LiftOuttake;
-import org.firstinspires.ftc.teamcode.config.Subsystems.Outtake.OuttakeConstants;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Outtake.OuttakePositional;
 import org.firstinspires.ftc.teamcode.config.Subsystems.Outtake.PIDFPivotOuttake;
 import org.firstinspires.ftc.teamcode.config.Subsystems.PushArm;
@@ -29,7 +28,7 @@ import org.firstinspires.ftc.vision.opencv.ColorRange;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Autonomous
-public class roadruner51 extends LinearOpMode {
+public class preloaded04 extends LinearOpMode {
 
 
     @Override
@@ -88,149 +87,49 @@ public class roadruner51 extends LinearOpMode {
 
 
 
+        Pose2d scoringPose = new Pose2d(15,123, Math.toRadians(-70));
 
 
 
 
-
-        Pose2d startingPose = new Pose2d(9,63,0);
-        Pose2d scoringPose1 = new Pose2d(41,69,0);
-        Pose2d scoringPose2 = new Pose2d(42.7,70,0);
-        Pose2d scoringPose3 = new Pose2d(42.7,72,0);
-        Pose2d scoringPose4 = new Pose2d(42.7,74,0);
-        Pose2d scoringPose5 = new Pose2d(42.7,75,0);
-        Pose2d pickUpPose = new Pose2d(9.8,28,0);
-        drive.setPoseEstimate(startingPose);
+        Pose2d startingPose = new Pose2d(7.5,111,Math.toRadians(-90));
         TrajectorySequence trajectorySequence = drive.trajectorySequenceBuilder(
                         startingPose
-                ).waitSeconds(0.6)
-                .lineToSplineHeading(scoringPose1) // (40, 69, 0)
-                .addDisplacementMarker(() -> {
-                    setIntake.Run();
-                })
-                /*.back(20) //21,69
-                .strafeRight(19)  // 21,50*/
-                .lineToLinearHeading(new Pose2d(21,50,(Math.toRadians(-30))))
-
-
+                )
+                .waitSeconds(1)
+                .lineToLinearHeading(new Pose2d(8, 130, Math.toRadians(-70)))
                 .addDisplacementMarker(()->{
+                    outtake.SetState(OuttakePositional.state.TRANSFER);
                     sliderIntake.SetExtension(0.5);
-                    pushArm.Activate();
+                    intake.SetState(Intake.state.SEARCH);
+                    clawIntake.AngleToTransfer();
                 })
-                .forward(8)
-
-                .turn(Math.toRadians(-60))
+                .lineToLinearHeading(scoringPose)
+                .turn(Math.toRadians(65))
                 .addDisplacementMarker(()->{
-                    pushArm.Deactivate();
+                    intake.SetState(Intake.state.CATCH);
+                    Alarm alarmTransfer = new Alarm(750, ()->{
+                        intake.SetState(Intake.state.TRANSFER_CLOSE);
+                        Alarm alarmTransferOuttake = new Alarm(1500, ()->{
+                            outtake.SetState(OuttakePositional.state.OUTTAKE_BASKET);
+                            intake.SetState(Intake.state.TRANSFER_OPEN);
+                        });
+                        alarmTransferOuttake.Run();
+                    });
+                    alarmTransfer.Run();
                 })
+                .lineToLinearHeading(scoringPose)
+                .waitSeconds(0.3)
 
-                .turn(Math.toRadians(50))
-                .addDisplacementMarker(()->{
-                    pushArm.Activate();
-                })
-                .forward(9)
-
-                .turn(Math.toRadians(-70))
-                .turn(Math.toRadians(60))
-                .forward(15)
-                .turn(Math.toRadians(-80))
-                .addDisplacementMarker(()->{sliderIntake.SetExtension(0);
-                pushArm.Deactivate();
-                })
-
-
-                .lineToLinearHeading(pickUpPose)
-                .addTemporalMarker(() -> {
-                    outtake.SetState(OuttakePositional.state.OUTTAKE_CHAMBER);
-                })
-                .waitSeconds(timeoutPickup)
-                .lineToSplineHeading(scoringPose2)
-                .addDisplacementMarker(()->{
-                    setIntake.Run();
-                })
-
-                .lineToSplineHeading(pickUpPose)
-                .addTemporalMarker(() -> {
-                    outtake.SetState(OuttakePositional.state.OUTTAKE_CHAMBER);
-                })
-                .waitSeconds(timeoutPickup)
-                .lineToSplineHeading(scoringPose3)
-                .addDisplacementMarker(()->{
-                    setIntake.Run();
-                })
-
-                .lineToSplineHeading(pickUpPose)
-                .addTemporalMarker(() -> {
-                    outtake.SetState(OuttakePositional.state.OUTTAKE_CHAMBER);
-                })
-                .waitSeconds(timeoutPickup)
-                .lineToSplineHeading(scoringPose4)
-                .addDisplacementMarker(()->{setIntake.Run();})
-
-                .lineToSplineHeading(pickUpPose)
-                .addTemporalMarker(() -> {
-                    outtake.SetState(OuttakePositional.state.OUTTAKE_CHAMBER);
-                })
-                .waitSeconds(timeoutPickup)
-                .lineToSplineHeading(scoringPose5)
-                .addDisplacementMarker(()->{setIntake.Run();})
-                .lineToSplineHeading(pickUpPose)
-                /*
-                .lineToConstantHeading(new Vector2d(8, 10)) // Pose2d(8, 15, 0)
-                .addDisplacementMarker(()->{
-                    outtake.SetState(OuttakePositional.state.OUTTAKE_CHAMBER);
-
-                })
-                .waitSeconds(timeoutPickup+0.1)
-                .lineToSplineHeading(scoringPose2)
-                .addDisplacementMarker(()->{
-
-                    setIntake.Run();
-                })
-
-                .lineToSplineHeading(pickUpPose)
-                .addDisplacementMarker(()->{
-                    outtake.SetState(OuttakePositional.state.OUTTAKE_CHAMBER);
-                })
-                .waitSeconds(timeoutPickup)
-                .lineToSplineHeading(scoringPose3)
-                .addDisplacementMarker(()->{
-                    setIntake.Run();
-                })
-
-                .lineToSplineHeading(pickUpPose)
-                .addDisplacementMarker(()->{
-                    outtake.SetState(OuttakePositional.state.OUTTAKE_CHAMBER);
-                })
-                .waitSeconds(timeoutPickup)
-                .lineToSplineHeading(scoringPose4)
-                .addDisplacementMarker(()->{setIntake.Run();})
-
-                .lineToSplineHeading(pickUpPose)
-                .addDisplacementMarker(()->{
-                    outtake.SetState(OuttakePositional.state.OUTTAKE_CHAMBER);
-                })
-                .waitSeconds(timeoutPickup)
-                .lineToSplineHeading(scoringPose5)
-                .addDisplacementMarker(()->{
-                    outtake.SetState(OuttakePositional.state.INTAKE_WALL);
-                    sliderIntake.SetExtension(0.5);
-                })
-                .turn(Math.toRadians(-120))
-
-                .forward(15)
-
-
-*/
-                //.addTrajectory(push)
                 .build();
         drive.followTrajectorySequenceAsync(trajectorySequence);
 
         telemetry.addLine("Paths loaded");
+        drive.setPoseEstimate(startingPose);
         telemetry.update();
+        positionalPivotOuttake.PivotToAuton();
 
         clawOuttake.CloseClaw();
-        positionalPivotOuttake.PivotToAuton();
         while (opModeInInit()){
             positionalPivotOuttake.Loop();
             telemetry.addLine("OK");
@@ -238,17 +137,22 @@ public class roadruner51 extends LinearOpMode {
         }
 
 
-        liftOuttake.LiftToChamber();
-        positionalPivotOuttake.PivotToSpecimen();
-        clawOuttake.RotToOuttake();
-        positionalPivotOuttake.PivotToSpecimen();
+
         drive.setPoseEstimate(startingPose);
+
+        positionalPivotOuttake.PivotToBasket();
+        clawOuttake.CloseClaw();
+        clawOuttake.RotToBasket();
+        liftOuttake.LiftToHighBasket();
+        intake.SetState(Intake.state.SEARCH);
+
+
         while (!isStopRequested()){
 
             outtake.Loop();
             intake.Loop();
             sliderIntake.Loop();
-                drive.update();
+            drive.update();
         }
     }
 }
