@@ -3,7 +3,7 @@
 #### - Control Award at 2025 Brazil Championship
 #### - Control Award nominated at 2025 World FIRST Championship (exemplar at all guidelines)
 Take a look on this [public portfolio](https://www.canva.com/design/DAGfsGstT8o/VnabmwOMJbgsyHWBn2nbkg/view?utm_content=DAGfsGstT8o&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hc7468d370b) for more about it.
-####this repo contains all the team code for the Brazil FTC regional __Unimate #24557__ robot.  
+#### This repo contains all the team code for the Brazil FTC regional __Unimate #24557__ robot.  
 ![image](https://media1.tenor.com/m/2mxd9eeZa_gAAAAd/first-tech-challenge-ftc.gif)
 ##  Cool features:
 - Sample recoginition (not used);
